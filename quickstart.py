@@ -51,29 +51,39 @@ def get_calendar():
 
 
 
-def create_event(useremail, start_time, freq):
+def create_event(email, plant):
+
+    # change format of freq
+    if (plant['freq'] == 'weeks'):
+        plant['freq'] = 'WEEKLY'
+    elif (plant['freq'] == 'days'):
+        plant['freq'] = 'DAILY'
+
+
+    end_time = str(int(plant['time'][:2])+1) + ':00:00'
+
     event = {
-    'summary': 'Appointment',
-    'location': 'Somewhere',
+    'summary': 'Water ' + plant['plant_name'],
+    'location': 'N/A',
     'start': {
-        'dateTime': start_time,
-        'timeZone': 'America/Los_Angeles'
+        'dateTime': plant['start_date'] + 'T' + plant['time'],
+        'timeZone': 'Europe/Zurich'
     },
     'end': {
-        'dateTime': '2020-05-22T12:35:00.000-07:00',
-        'timeZone': 'America/Los_Angeles'
+        'dateTime': plant['start_date'] + 'T' + end_time,
+        'timeZone': 'Europe/Zurich'
     },
     'recurrence': [
-        'RRULE:FREQ=' + freq + ';UNTIL=20110701T170000Z',
+        'RRULE:FREQ=' + plant['freq'] + ';INTERVAL=' + plant['interval'] + ';COUNT=50',
     ],
     'attendees': [
         {'email': 'hmbarrett92@gmail.com'},
-        {'email': useremail},
+        {'email': email},
     ],
         'reminders': {
         'useDefault': False,
         'overrides': [
-        {'method': 'email', 'minutes': 24 * 60},
+        {'method': 'email', 'minutes': 60},
         {'method': 'popup', 'minutes': 10},
         ],
     },
@@ -83,6 +93,8 @@ def create_event(useremail, start_time, freq):
     recurring_event = service.events().insert(calendarId='primary',sendNotifications=True, body=event).execute()
     print( 'Event created: %s' % (recurring_event.get('htmlLink')))
 
-create_event('cshort@tcd.ie', '2020-05-22T12:32:00.000-07:00', 'WEEKLY')
+# dictionary of plants
+plant_event = {'email': 'cshort@tcd.ie', 
+                'plants':[{'plant_name': 'Aloe Vera', 'start_date': '2020-05-22', 'interval': '2', 'freq': 'weeks', 'time': '18:00:00'}]}
 
-
+create_event(plant_event['email'], plant_event['plants'][0])
