@@ -1,21 +1,34 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1>login page!</h1>
+    <p id="usererror">test error</p>
     <button id='newuser'>test</button>
-{% endblock %}
 
 
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
-// code to test routes
 
-document.getElementById('newuser').addEventListener('click', function () {
-    $.getJSON("/checkuser", { email: 'cshort@tcd.ie' }, function (prediction_info) 
-}
+$('#newuser').click(function () {
+    console.log("hello");
+    let email = 'cshort@tcd.ie';
+    $.getJSON("/checkuser", { email: email }, function (userExists) {
+
+        // if true
+        if (userExists)
+            window.location.replace("/home?email=" + email);
+        else 
+            $('#usererror').html("User does not exist")
+    });
+});
 
 
 </script>
-
+{% endblock %}
 
 
 
