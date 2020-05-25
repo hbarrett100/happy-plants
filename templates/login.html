@@ -1,4 +1,28 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1>login page!</h1>
+    <button id='newuser'>test</button>
 {% endblock %}
+
+
+
+<script>
+// code to test routes
+
+document.getElementById('newuser').addEventListener('click', function () {
+    $.getJSON("/checkuser", { email: 'cshort@tcd.ie' }, function (prediction_info) 
+}
+
+
+</script>
+
+
+
+
+
+// # p = document.getElementById("plant-text-box");
+// # plantName = p.getText()
+
+// # $.post("new_plant", {email: "hannnahh123@asd.be", plant_name: plantName}, function(result){
+// #     $("span").html(result);
+// # })
