@@ -2,27 +2,59 @@
 {% block content %}
     <h1>login page!</h1>
     <p id="usererror">test error</p>
-    <button id='newuser'>test</button>
+    <button id='existinguser'>Existing user</button>
+    <button id='newuser'>New user</button>
 
-
-
-
-
-
+<!-- these scripts will all move to new file, just testing now -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
 
-$('#newuser').click(function () {
-    console.log("hello");
-    let email = 'cshort@tcd.ie';
-    $.getJSON("/checkuser", { email: email }, function (userExists) {
+$('#existinguser').click(function () {
+    console.log("hello login page");
+    let email = 'cshorttt@tcd.ie';
+    // add check for when button pressed with no email given
+
+    $.get("/checkuser", { email: email }, function (existingUser) {
+        console.log(existingUser);
+        console.log("test");
 
         // if true
-        if (userExists)
+        if (existingUser == 'user')
             window.location.replace("/home?email=" + email);
-        else 
-            $('#usererror').html("User does not exist")
+        else if (existingUser == 'no user') // never gets here
+            $('#usererror').html("User does not exist.")
+
+            
+        else if (existingUser == 'no email'){
+            $('#usererror').html("You must enter an email")
+
+        }
+
+    });
+});
+
+$('#newuser').click(function () {
+    console.log("login page new user button");
+    let email = 'hmbarrett92@gmail.com';
+    // add check for when button pressed with no email given
+
+    $.get("/newuser", { email: email }, function (newUser) {
+        console.log(newUser);
+        console.log("test");
+
+        // if true
+        if (newUser == 'new user')
+            window.location.replace("/home?email=" + email);
+        else if (newUser == 'user already exists') // never gets here
+            $('#usererror').html("User already exists")
+
+            
+        else if (newUser == 'no email'){
+            $('#usererror').html("You must enter an email")
+
+        }
+
     });
 });
 
@@ -31,11 +63,3 @@ $('#newuser').click(function () {
 {% endblock %}
 
 
-
-
-// # p = document.getElementById("plant-text-box");
-// # plantName = p.getText()
-
-// # $.post("new_plant", {email: "hannnahh123@asd.be", plant_name: plantName}, function(result){
-// #     $("span").html(result);
-// # })

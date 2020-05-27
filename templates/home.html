@@ -1,7 +1,34 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for post in posts %}
-        <h1>{{ post.title }}</h1>
-        <p>By {{ post.author }} </p>
-    {% endfor %}
+<h1>hoem page!</h1>
+<p id="homepage-error">test error</p>
+<button id='newplant'>Add new plant</button>
+
+
+<!-- these scripts will all move to new file, just testing now -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+// hardcoding example input to test
+$('#newplant').click(function () {
+    console.log("hello home page");
+    let email = 'cshort@tcd.ie';
+    let plantName = 'elephant plant';
+    let comments = "direct sunlight";
+    let interval = 'weeks';
+    let frequency = 2;
+    // need to combine the date and time button to make start date
+    // let start_date = 
+
+    // send post request, no callback function needed
+    $.post("new_plant", {email: email, plant_name: plantName, comments: comments, interval: interval, frequency: frequency, start_date: start_date});
+});
+
+
+</script>
 {% endblock %}
+
+
+// # p = document.getElementById("plant-text-box");
+// # plantName = p.getText()
+
