@@ -1,4 +1,5 @@
 import sys
+import json
 #for creating the mapper code
 from sqlalchemy import Column, Integer, String, DateTime
 
@@ -21,6 +22,18 @@ class Plant(Base):
    interval = Column(String(20))
    frequency = Column(Integer)
    date = Column(DateTime)
+
+
+   def to_json(self):
+      plant_dict = {
+         "plant": self.plant,
+         "comments": self.comments,
+         "interval": self.interval,
+         "frequency": self.frequency,
+         "date": '{:%d/%m/%Y}'.format(self.date)
+      }
+
+      return json.dumps(plant_dict)
 
 #creates a create_engine instance at the bottom of the file
 if __name__ == "__main__":

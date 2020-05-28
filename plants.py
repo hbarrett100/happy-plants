@@ -4,6 +4,8 @@ app = Flask(__name__)
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Base, Plant
+from datetime import datetime
+import json
 
 #Connect to Database and create database session
 engine = create_engine(
@@ -29,8 +31,13 @@ def home():
     user_email = request.args.get('email')
 
     # what if url typed in by hand with invalid email - in database? valid email?
-    user_plants_info = session.query(Plant).filter_by(email = user_email).all()
-    return render_template('home.html', user_plants_info = user_plants_info)
+    all_plants = session.query(Plant).filter_by(email = user_email).all()
+    
+    user_plants_info = []
+    for plant in all_plants:
+        user_plants_info.append(plant.to_json())
+
+    return render_template('home.html', user_plants_info = user_plants_info, user_email=user_email)
 
 
 #check if current user exists
@@ -46,7 +53,7 @@ def checkuser():
             return 'user'
         else:
             return 'no user'
-    # need to check if no email given
+    # need to check if no email given!!
  
 
     # need to check for valid email
@@ -68,13 +75,36 @@ def newuser():
 @app.route('/new_plant', methods=['GET', 'POST'])
 def new_plant():
     if request.method == 'POST':
-        #get email out to use in redirect to homepage? 
-        new_plant = Plant(email=request.form.get('email'), plant=request.form.get("plant_name"), comments=request.form.get("comments"),
-                        interval=request.form.get("interval"), frequency=request.form.get("frequency"), date=request.form.get("start_date"))
+        #change format of date
+        date = request.form.get("start_date")
+        datetime_object = datetime.strptime(date, '%d-%m-%Y %H:%M:%S')
+
+        # get user email
+        user_email = request.form.get('email')
+
+        #create new plant object
+        print("making ",request.form.get("plant_name"))
+        new_plant = Plant(email=user_email, plant=request.form.get("plant_name"), comments=request.form.get("comments"),
+                        interval=request.form.get("interval"), frequency=request.form.get("frequency"), date=datetime_object)
+
+        print("adding ",request.form.get("plant_name"))
         session.add(new_plant)
-        sessio.commit()
-        #need to account for user_email = request.args.get('email') in home route
-        return redirect(url_for('home.html'))
+
+        #will throw error if plant not new
+        #add conditional to return error to front end if plant not new and to add it if it is new
+        print("committing ",request.form.get("plant_name"))
+        session.commit()
+       
+
+        #session.query returns an array of plants
+        all_plants = session.query(Plant).filter_by(email = user_email).all()
+
+        # loop through all plants in array and convert all to json strings
+        user_plants_info = []
+        for plant in all_plants:
+            user_plants_info.append(plant.to_json())
+        print("returning", user_plants_info)
+        return json.dumps(user_plants_info) #return array of json strings
         
 
 

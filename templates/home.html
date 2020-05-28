@@ -9,26 +9,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
+// Get the current user email from flask
+const CURRENT_USER = "{{user_email}}"
+
+
+let plant = "{{user_plants_info}}"
+
+
 // hardcoding example input to test
 $('#newplant').click(function () {
-    console.log("hello home page");
-    let email = 'cshort@tcd.ie';
-    let plantName = 'elephant plant';
+    console.log("adding qwertyuiop");
+    let plantName = 'qwertyuiop';
     let comments = "direct sunlight";
     let interval = 'weeks';
     let frequency = 2;
-    // need to combine the date and time button to make start date
-    // let start_date = 
+    // format of time will be from jquery datetime picker
+    let start_date = '30-05-2020 18:00:00'
 
     // send post request, no callback function needed
-    $.post("new_plant", {email: email, plant_name: plantName, comments: comments, interval: interval, frequency: frequency, start_date: start_date});
+    // add callback function for json
+    $.post("/new_plant", {email: CURRENT_USER, plant_name: plantName, comments: comments, interval: interval, frequency: frequency, start_date: start_date});
 });
 
 
 </script>
 {% endblock %}
 
-
-// # p = document.getElementById("plant-text-box");
-// # plantName = p.getText()
 
