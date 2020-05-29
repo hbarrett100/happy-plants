@@ -53,9 +53,8 @@ def checkuser():
             return 'user'
         else:
             return 'no user'
+            
     # need to check if no email given!!
- 
-
     # need to check for valid email
 
 @app.route("/newuser")
@@ -82,29 +81,33 @@ def new_plant():
         # get user email
         user_email = request.form.get('email')
 
-        #create new plant object
-        print("making ",request.form.get("plant_name"))
-        new_plant = Plant(email=user_email, plant=request.form.get("plant_name"), comments=request.form.get("comments"),
-                        interval=request.form.get("interval"), frequency=request.form.get("frequency"), date=datetime_object)
+        # if user has already entered that plant, it will be a unique constraint. Display message to user.
+        # else add new plant to database
+        existing_user_plant = session.query(Plant).filter_by(email=user_email, plant=request.form.get("plant_name")).first()
+        if existing_user_plant:
+            return 'unique constraint'
+        else:
+            print("making ",request.form.get("plant_name"))
+            new_plant = Plant(email=user_email, plant=request.form.get("plant_name"), comments=request.form.get("comments"),
+                    interval=request.form.get("interval"), frequency=request.form.get("frequency"), date=datetime_object)
 
-        print("adding ",request.form.get("plant_name"))
-        session.add(new_plant)
+            print("adding ",request.form.get("plant_name"))
+            session.add(new_plant)
 
-        #will throw error if plant not new
-        #add conditional to return error to front end if plant not new and to add it if it is new
-        print("committing ",request.form.get("plant_name"))
-        session.commit()
+        
+            print("committing ",request.form.get("plant_name"))
+            session.commit()
        
 
-        #session.query returns an array of plants
-        all_plants = session.query(Plant).filter_by(email = user_email).all()
+            # session.query returns an array of plants
+            all_plants = session.query(Plant).filter_by(email = user_email).all()
 
-        # loop through all plants in array and convert all to json strings
-        user_plants_info = []
-        for plant in all_plants:
-            user_plants_info.append(plant.to_json())
-        print("returning", user_plants_info)
-        return json.dumps(user_plants_info) #return array of json strings
+            # loop through all plants in array and convert all to json strings
+            user_plants_info = []
+            for plant in all_plants:
+                user_plants_info.append(plant.to_json())
+            print("returning", user_plants_info)
+            return json.dumps(user_plants_info) 
         
 
 
