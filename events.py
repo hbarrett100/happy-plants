@@ -6,6 +6,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
+
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 
@@ -94,12 +95,12 @@ def create_event(email, plant):
     print( 'Event created: %s' % (recurring_event.get('htmlLink')))
 
 # example dictionary of plants
-plant_event = {'email': 'cshort@tcd.ie', 
-                'plants':[{'plant_name': 'Aloe Vera', 'start_date': '2020-05-24', 'interval': '2', 'freq': 'weeks', 'time': '18:00:00', 'comments': 'Direct sunlight'},
-                {'plant_name': 'Elephant plant', 'start_date': '2020-05-24', 'interval': '1', 'freq': 'weeks', 'time': '17:00:00', 'comments': 'Direct sunlight'}]}
+# plant_event = {'email': 'cshort@tcd.ie', 
+#                 'plants':[{'plant_name': 'Aloe Vera', 'start_date': '2020-05-24', 'interval': '2', 'freq': 'weeks', 'time': '18:00:00', 'comments': 'Direct sunlight'},
+#                 {'plant_name': 'Elephant plant', 'start_date': '2020-05-24', 'interval': '1', 'freq': 'weeks', 'time': '17:00:00', 'comments': 'Direct sunlight'}]}
 
 
 #call function for each plant in array
-for plant in plant_event['plants']:
-    create_event(plant_event['email'], plant)
+# for plant in plant_event['plants']:
+#     create_event(plant_event['email'], plant)
     # print(plant)

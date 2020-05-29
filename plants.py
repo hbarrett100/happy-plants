@@ -6,6 +6,10 @@ from sqlalchemy.orm import sessionmaker
 from database import Base, Plant
 from datetime import datetime
 import json
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+import events
 
 #Connect to Database and create database session
 engine = create_engine(
@@ -53,7 +57,7 @@ def checkuser():
             return 'user'
         else:
             return 'no user'
-            
+
     # need to check if no email given!!
     # need to check for valid email
 
@@ -113,6 +117,55 @@ def new_plant():
 
 
 # route: add event to google calendar
+@app.route('/add_to_calendar', methods=['GET', 'POST'])
+def add_to_calendar():
+    if request.method == 'POST':
+        freq = request.form.get("frequency")
+        if (freq == 'weeks'):
+            freq = 'WEEKLY'
+        elif (freq == 'days'):
+            freq = 'DAILY'
+
+        # split datetime for google calendar format
+        date, time = request.form.get("start_date").split(' ')
+        start_date = date[6:10] + date[2:6] + date[:2]
+
+
+        # end time of event one hour after start time
+        end_time = str(int(time[:2])+1) + ':00:00'
+
+        event = {
+        'summary': 'Water ' + request.form.get("plant_name"),
+        'location': 'N/A',
+        'start': {
+            'dateTime': start_date + 'T' + time,
+            'timeZone': 'Europe/Zurich'
+        },
+        'end': {
+            'dateTime': start_date + 'T' + end_time,
+            'timeZone': 'Europe/Zurich'
+        },
+        'recurrence': [
+            'RRULE:FREQ='+ freq + ';INTERVAL=' + request.form.get("interval")+';COUNT=50',
+        ],
+        'attendees': [
+            {'email': 'hmbarrett92@gmail.com'},
+            {'email': request.form.get('email')},
+        ],
+            'reminders': {
+            'useDefault': False,
+            'overrides': [
+            {'method': 'email', 'minutes': 60},
+            {'method': 'popup', 'minutes': 10},
+            ],
+        },
+        }
+        print(event["recurrence"])
+        service = events.get_calendar()
+        recurring_event = service.events().insert(calendarId='primary',sendNotifications=True, body=event).execute()
+        # print( 'Event created: %s' % (recurring_event.get('htmlLink')))
+        return 'event added'
+
 
 
 

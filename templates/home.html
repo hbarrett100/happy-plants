@@ -2,7 +2,9 @@
 {% block content %}
 <h1>hoem page!</h1>
 <p id="homepage-error">test</p>
+<p id="calendar-test">cal test</p>
 <button id='newplant'>Add new plant</button>
+<button id='calendar'>Add to calendar</button>
 
 
 <!-- these scripts will all move to new file, just testing now -->
@@ -19,7 +21,7 @@ let plant = "{{user_plants_info}}"
 // hardcoding example input to test
 $('#newplant').click(function () {
     console.log("adding cat");
-    let plantName = 'cat';
+    let plantName = 'lilllly';
     let comments = "direct sunlight";
     let interval = 'weeks';
     let frequency = 2;
@@ -34,6 +36,23 @@ $('#newplant').click(function () {
     });
 });
 
+
+$('#calendar').click(function () {
+    console.log("adding cat to calendar");
+    let plantName = 'lilllly';
+    let comments = "direct sunlight";
+    let interval = 2;
+    let frequency = 'weeks';
+    // format of time will be from jquery datetime picker
+    let start_date = '30-05-2020 18:00:00'
+
+    // send post request
+    $.post("/add_to_calendar", {email: CURRENT_USER, plant_name: plantName, comments: comments, interval: interval, frequency: frequency, start_date: start_date}, function(result){
+        if (result == 'event added') {
+            $('#calendar-test').html("Added to google calendar")
+        }
+    });
+});
 
 </script>
 {% endblock %}
