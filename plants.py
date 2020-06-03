@@ -164,16 +164,26 @@ def add_to_calendar():
         service = events.get_calendar()
         recurring_event = service.events().insert(calendarId='primary',sendNotifications=True, body=event).execute()
         # print( 'Event created: %s' % (recurring_event.get('htmlLink')))
-        return 'event added'
+        return True
 
 
 
 
-# route: delete plant from db
+# route: delete plant from db and delete event
+@app.route('/remove_plant')
+def remove_plant():
+    #remove plant from database using composite PK email and plant
+    user_email = request.args.get('email')
+    plant_name = request.args.get('plant')
+    plant_to_delete = session.query(Plant).filter_by(email=user_email, plant=plant_name).one()
+    session.delete(plant_to_delete)
+    session.commit()
+
+    #remove event from calendar
 
 
 
-# route: edit entry in db
+# route: edit entry in db and edit event
 
 if __name__ == '__main__':
     app.run(debug=True)
