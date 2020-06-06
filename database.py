@@ -22,18 +22,22 @@ class Plant(Base):
    interval = Column(String(20))
    frequency = Column(Integer)
    date = Column(DateTime)
+   id = Column(String(50))
 
-
+   # convert to JSON to send back to front end
    def to_json(self):
       plant_dict = {
          "plant": self.plant,
          "comments": self.comments,
          "interval": self.interval,
          "frequency": self.frequency,
-         "date": '{:%d/%m/%Y}'.format(self.date)
+         "date": '{:%d/%m/%Y}'.format(self.date),
+         "id": self.id
       }
 
       return json.dumps(plant_dict)
+
+      #add repr that returns json
 
 #creates a create_engine instance at the bottom of the file
 if __name__ == "__main__":

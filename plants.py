@@ -38,6 +38,7 @@ def home():
     all_plants = session.query(Plant).filter_by(email = user_email).all()
     
     user_plants_info = []
+    #plant is an instance of plant object
     for plant in all_plants:
         user_plants_info.append(plant.to_json())
 
@@ -163,8 +164,16 @@ def add_to_calendar():
         print(event["recurrence"])
         service = events.get_calendar()
         recurring_event = service.events().insert(calendarId='primary',sendNotifications=True, body=event).execute()
+
+        #add event id to database
+        added_plant = session.query(Plant).filter_by(email=request.form.get('email'), plant=request.form.get("plant_name")).first()
+        print(added_plant.to_json())
+        setattr(added_plant, 'id', recurring_event.get('id'))
+        session.commit()
+
+        # print(recurring_event.get('id'))
         # print( 'Event created: %s' % (recurring_event.get('htmlLink')))
-        return True
+        return 'true'
 
 
 
@@ -180,6 +189,8 @@ def remove_plant():
     session.commit()
 
     #remove event from calendar
+    
+
 
 
 

@@ -93,6 +93,7 @@ def create_event(email, plant):
     service = get_calendar()
     recurring_event = service.events().insert(calendarId='primary',sendNotifications=True, body=event).execute()
     print( 'Event created: %s' % (recurring_event.get('htmlLink')))
+    print(recurring_event['recurringEventId'])
 
 # example dictionary of plants
 # plant_event = {'email': 'cshort@tcd.ie', 
@@ -104,3 +105,18 @@ def create_event(email, plant):
 # for plant in plant_event['plants']:
 #     create_event(plant_event['email'], plant)
     # print(plant)
+
+
+# service = get_calendar()
+# now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+# print('Getting the upcoming 10 events')
+# events_result = service.events().list(calendarId='primary', timeMin=now,
+#                                     q='Elephant').execute()
+# events = events_result.get('items', [])
+
+# if not events:
+#     print('No upcoming events found.')
+# for event in events:
+#     start = event['recurringEventId']
+#     print(start, event['summary'])
+
