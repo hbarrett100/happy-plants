@@ -165,7 +165,7 @@ def add_to_calendar():
         service = events.get_calendar()
         recurring_event = service.events().insert(calendarId='primary',sendNotifications=True, body=event).execute()
 
-        #add event id to database
+        #add event id to database. recurring_event is event objecgt with attribute called id
         added_plant = session.query(Plant).filter_by(email=request.form.get('email'), plant=request.form.get("plant_name")).first()
         print(added_plant.to_json())
         setattr(added_plant, 'id', recurring_event.get('id'))
@@ -181,15 +181,29 @@ def add_to_calendar():
 # route: delete plant from db and delete event
 @app.route('/remove_plant')
 def remove_plant():
-    #remove plant from database using composite PK email and plant
-    user_email = request.args.get('email')
-    plant_name = request.args.get('plant')
-    plant_to_delete = session.query(Plant).filter_by(email=user_email, plant=plant_name).one()
-    session.delete(plant_to_delete)
-    session.commit()
+        #remove event from calendar
+        user_email = request.args.get('email')
+        plant_name = request.args.get('plant')
+        plant_to_delete = session.query(Plant).filter_by(email=user_email, plant=plant_name).first()
 
-    #remove event from calendar
-    
+        event_id = plant_to_delete.id
+        instances = events.get_calendar().events().instances(calendarId='primary', eventId=event_id).execute()
+
+        # Select the instance to cancel.
+        instance = instances['items'][0]
+        instance['status'] = 'cancelled'
+
+        updated_instance = events.get_calendar().events().update(calendarId='primary', eventId=instance['id'], body=instance).execute()
+
+        
+        print(updated_instance['updated'])
+        print('event removed from cal')
+
+        #remove plant from database
+        session.delete(plant_to_delete)
+        session.commit()
+        print('event removed from db')
+        return 'true'
 
 
 

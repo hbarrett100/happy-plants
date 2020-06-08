@@ -5,7 +5,7 @@
 <p id="calendar-test">cal test</p>
 <button id='newplant'>Add new plant</button>
 <button id='calendar'>Add to calendar</button>
-<button id='calendar'>delete plant</button>
+<button id='delete'>delete plant</button>
 
 
 <!-- these scripts will all move to new file, just testing now -->
@@ -14,7 +14,7 @@
 
     // Get the current user email from flask
     const CURRENT_USER = "{{user_email}}"
-    const TEMP_PLANT_NAME = 'con'
+    const TEMP_PLANT_NAME = 'hbbb'
 
 
     let plant = "{{user_plants_info}}"
@@ -59,9 +59,14 @@
 
     // function to remove a plant from database and calendar
     // no need to have any callback function here? 
-    $('#removePlant').click(function () {
-        let plantName = 'cactus';
-        $.get("/remove_plant", { email: CURRENT_USER, plant: plantName })
+    $('#delete').click(function () {
+        let plantName = TEMP_PLANT_NAME;
+        console.log('inside delete');
+        $.get("/remove_plant", { email: CURRENT_USER, plant: TEMP_PLANT_NAME }, function(result){
+            if (result) {
+                $('#calendar-test').html("Event deleted")
+            }
+        })
     });
 
 </script>
