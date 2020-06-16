@@ -1,7 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for post in posts %}
-        <h1>{{ post.title }}</h1>
-        <p>By {{ post.author }} </p>
-    {% endfor %}
+<h1>hoem page!</h1>
+<p id="homepage-error">test</p>
+<p id="calendar-test">cal test</p>
+<button id='newplant'>Add new plant</button>
+<button id='calendar'>Add to calendar</button>
+<button id='delete'>delete plant</button>
+<button id='edit'>edit plant</button>
+
 {% endblock %}
