@@ -1,5 +1,4 @@
 var dropdown = `<div class="form-group">
-                <label for="frequency">Example select</label>
                 <select class="form-control" id="frequency">
                 <option>1 day</option>
                 <option>2 days</option>
@@ -10,7 +9,7 @@ var dropdown = `<div class="form-group">
                 <option>1 week</option>
                 <option>8 days</option>
                 <option>9 days</option>
-                <option>10 days/option>
+                <option>10 days</option>
                 <option>11 days</option>
                 <option>12 days</option>
                 <option>13 days</option>
@@ -23,25 +22,6 @@ var dropdown = `<div class="form-group">
                 </div>`
 
 
-var startDate = `<div class="container">
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group">
-                <div class="input-group date" id="startdate" data-target-input="nearest">
-                    <input type="text" class="form-control datetimepicker-input" data-target="#startdate"/>
-                    <div class="input-group-append" data-target="#startdate" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                $('#datetimepicker1').datetimepicker();
-            });
-        </script>
-    </div>
-</div>`
 
 $(document).ready(function(){
 
@@ -49,7 +29,7 @@ $(document).ready(function(){
 // https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
 
 	$('[data-toggle="tooltip"]').tooltip();
-	var actions = $("table td:last-child").html(); //add html for buttons to var
+	var actions = $("table td:last-child").html(); //add html for all buttons to var
 	// Append table with add row form on add new button click
     $(".add-new").click(function(){
 		$(this).attr("disabled", "disabled"); //disable button
@@ -57,20 +37,30 @@ $(document).ready(function(){
         var row = '<tr>' +
             '<td><input type="text" class="form-control" name="plant" id="plant"></td>' +
             '<td>' + dropdown + '</td>' +
-            '<td>' + startDate + '</td>' +
-            '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
+            '<td><input type="text" id="datepicker"></td>' +
+            '<td><input type="text" name="timepicker" class="timepicker"/></td>' +
+            '<td><input type="text" class="form-control" name="comments" id="comments"></td>' +
 			'<td>' + actions + '</td>' +
         '</tr>';
     	$("table").append(row);		
 		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle(); // hiding edit and showing add for the new row
         $('[data-toggle="tooltip"]').tooltip(); 
 
-        $('#datetimepicker1').datetimepicker();
-    
+        $( "#datepicker" ).datepicker();
+
+        // https://github.com/ericjgagnon/wickedpicker
+        $('.timepicker').wickedpicker({
+            showSeconds: true,
+            upArrow: 'wickedpicker__controls__control-up',  //The up arrow class selector to use, for custom CSS
+            downArrow: 'wickedpicker__controls__control-down', //The down arrow class selector to use, for custom CSS
+            close: 'wickedpicker__close', //The close class selector to use, for custom CSS
+            hoverState: 'hover-state', //The hover state class to use, for custom CSS
+            title: 'Choose a time', //The Wickedpicker's title,
+
+        });
     });
 
    
-
 	// Add row on add button click
 	$(document).on("click", ".add", function(){
 		var empty = false; // flag
