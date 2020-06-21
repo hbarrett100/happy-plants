@@ -58,7 +58,7 @@ body, html {
 }
 /* adapted from https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature */ 
 .table-wrapper {
-	width: 700px;
+	width: 850px;
 	margin: 30px auto;
 	background: #fff;
 	padding: 20px;	
@@ -97,7 +97,7 @@ table.table th i {
 	cursor: pointer;
 }
 table.table th:last-child {
-	width: 140px;
+	width: 160px;
 }
 table.table td a {
 	cursor: pointer;
@@ -125,4 +125,13 @@ table.table .form-control.error {
 }
 table.table td .add {
 	display: none;
+}
+
+
+#datepicker {
+	width: 90px;
+}
+
+.timepicker {
+	width: 90px;
 }
