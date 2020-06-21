@@ -45,36 +45,6 @@ def home():
     return render_template('home.html', user_plants_info = user_plants_info, user_email=user_email)
 
 
-# #check if current user exists
-# @app.route("/checkuser")
-# def checkuser():
-#     print("hello checkuser route")
-#     user_email = request.args.get('email')
-#     # show message if user doesnt exist
-#     print(user_email)
-#     if user_email: 
-#         existing_user = session.query(Plant).filter_by(email = user_email).first()
-#         if existing_user:
-#             return 'user'
-#         else:
-#             return 'no user'
-
-#     # need to check if no email given!!
-#     # need to check for valid email
-
-# @app.route("/newuser")
-# def newuser():
-#     user_email = request.args.get('email')
-#     print(user_email)
-#     # show message if user doesnt exist
-#     if user_email: 
-#         existing_user = session.query(Plant).filter_by(email = user_email).first()
-#         if existing_user:
-#             return 'user already exists'
-#         else:
-#             return 'new user'
-
-
 # add new plant to database
 @app.route('/new_plant', methods=['GET', 'POST'])
 def new_plant():

@@ -21,9 +21,12 @@ var dropdown = `<div class="form-group">
                 </select>
                 </div>`
 
-
-
 $(document).ready(function(){
+
+     // Get the current user email from flask
+     const CURRENT_USER = "{{user_email}}"
+ 
+     let plant = "{{user_plants_info}}"
 
    
 // https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
@@ -48,7 +51,7 @@ $(document).ready(function(){
 
         $( "#datepicker" ).datepicker();
 
-        // https://github.com/ericjgagnon/wickedpicker
+        // wickedpicker code from https://github.com/ericjgagnon/wickedpicker
         $('.timepicker').wickedpicker({
             showSeconds: true,
             upArrow: 'wickedpicker__controls__control-up',  //The up arrow class selector to use, for custom CSS
@@ -58,6 +61,8 @@ $(document).ready(function(){
             title: 'Choose a time', //The Wickedpicker's title,
 
         });
+
+        
     });
 
    
@@ -83,7 +88,30 @@ $(document).ready(function(){
 		if(!empty){
 			input.each(function(){
 				$(this).parent("td").html($(this).val()); // Set the table cell contents as the contents in the input box
-			});			
+            });			
+            
+            // send post request to route to add plant to database
+
+            // split watering frequency into interval and frequency
+            let freqBeforeSplit = $('#frequency').val();
+            let interval = freqBeforeSplit.split(" ")[0];
+            let frequency = freqBeforeSplit.split(" ")[1];
+            console.log("interval" + interval);
+            console.log("freq" + frequency);
+
+            var date = $("#datepicker").datepicker({ dateFormat: 'dd-MM-yyyy' }).val();
+            var timepicker = $('.timepicker').wickedpicker();
+            var time = timepicker.wickedpicker('time');
+            console.log("time" + time);
+            var startDate = date + ' ' + time;
+            console.log("start date: " + startDate);
+
+            $.post("/new_plant", { email: CURRENT_USER, plant_name: $('#plant').val(), comments: $('#comments').val(), interval: interval, frequency: frequency, start_date: startDate }, function (result) {
+                if (result == 'unique constraint') {
+                    $('#homepage-error').html("Plant already exists")
+                } // else here to use the json strings returned to populate the table and show to user
+
+            });
 			$(this).parents("tr").find(".add, .edit").toggle(); // change add button to edit
 			$(".add-new").removeAttr("disabled"); // enable the add new button again
 		}		
@@ -108,31 +136,23 @@ $(document).ready(function(){
 
 
 
-    // Get the current user email from flask
-    const CURRENT_USER = "{{user_email}}"
-    const TEMP_PLANT_NAME = 'hi'
-
-
-    let plant = "{{user_plants_info}}"
+   
 
 
     // hardcoding example input to test
-    $('#newplant').click(function () {
-        console.log("adding" + TEMP_PLANT_NAME);
-        let plantName = TEMP_PLANT_NAME;
-        let comments = "direct sunlight";
-        let interval = 'weeks';
-        let frequency = 2;
-        // format of time will be from jquery datetime picker
-        let start_date = '30-05-2020 18:00:00'
+    // $('#newplant').click(function () {
+    //     console.log("adding" + TEMP_PLANT_NAME);
+    //     let plantName = TEMP_PLANT_NAME;
+    //     let comments = "direct sunlight";
+    //     let interval = 'weeks';
+    //     let frequency = 2;
+    //     // format of time will be from jquery datetime picker
+    //     let start_date = '30-05-2020 18:00:00'
 
-        // send post request
-        $.post("/new_plant", { email: CURRENT_USER, plant_name: plantName, comments: comments, interval: interval, frequency: frequency, start_date: start_date }, function (result) {
-            if (result == 'unique constraint') {
-                $('#homepage-error').html("Plant already exists")
-            } // else here to use the json strings returned to populate the table and show to user
-        });
-    });
+    //     // send post request
+      
+    //     });
+    // });
 
 
     $('#calendar').click(function () {
