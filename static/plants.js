@@ -21,24 +21,25 @@ var dropdown = `<div class="form-group">
                 </select>
                 </div>`
 
-
-
+var plantName;
+var comments;
 var datepicker;
 var timepicker;
-
+var email;
 
 $(document).ready(function(){
 
-     // Get the current user email from flask
-     const CURRENT_USER = "{{user_email}}"
+
  
      let plant = "{{user_plants_info}}"
 
    
-// https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
+    // https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
 
 	$('[data-toggle="tooltip"]').tooltip();
-	var actions = $("table td:last-child").html(); //add html for all buttons to var
+    var actions = $("table td:last-child").html(); //add html for all buttons to var
+    
+
 	// Append table with add row form on add new button click
     $(".add-new").click(function(){
 		$(this).attr("disabled", "disabled"); //disable button
@@ -48,7 +49,7 @@ $(document).ready(function(){
             '<td>' + dropdown + '</td>' +
             '<td><input type="text" id="datepicker"></td>' +
             '<td><input type="text" name="timepicker" class="timepicker"/></td>' +
-            '<td><input type="text" class="form-control" name="comments" id="comments"></td>' +
+            '<td><input type="text" class="form-control" name="comments" id="comments"></input></td>' +
 			'<td>' + actions + '</td>' +
         '</tr>';
     	$("table").append(row);		
@@ -59,6 +60,8 @@ $(document).ready(function(){
             dateFormat: 'dd-mm-yy'
         });
 
+        var plant = $("#plant")
+        var comments = $("#comments")
         // wickedpicker code from https://github.com/ericjgagnon/wickedpicker
         timepicker = $('.timepicker').wickedpicker({
             twentyFour: true,
@@ -71,13 +74,11 @@ $(document).ready(function(){
             title: 'Choose a time', //The Wickedpicker's title,
 
         });
-
-        
-    });
+    
 
    
 	// Add row on add button click
-	$(document).on("click", ".add", function(){
+	$(".add").click(function(){
 		var empty = false; // flag
         var input = $(this).parents("tr").find('input[type="text"]'); // get input boxes in this row
         
@@ -115,12 +116,16 @@ $(document).ready(function(){
             // var time = ('#timepicker').wickedpicker('time');
             var time = timepicker.val();
             
-    
             console.log("time " + time);
             var startDate = date + ' ' + time;
             console.log("start date: " + startDate);
 
-            $.post("/new_plant", { email: CURRENT_USER, plant_name: $('#plant').val(), comments: $('#comments').val(), interval: interval, frequency: frequency, start_date: startDate }, function (result) {
+            let plantName = plant.val();
+            console.log(plantName);
+            let commentsValue = comments.val();
+            console.log(commentsValue);
+
+            $.post("/new_plant", { email: CURRENT_USER, plant_name: plantName, comments: commentsValue, interval: interval, frequency: frequency, start_date: startDate }, function (result) {
                 if (result == 'unique constraint') {
                     $('#homepage-error').html("Plant already exists")
                 } // else here to use the json strings returned to populate the table and show to user
@@ -131,7 +136,7 @@ $(document).ready(function(){
 		}		
     });
 
-
+});
 	// Edit row on edit button click
 	$(document).on("click", ".edit", function(){	
         
@@ -201,7 +206,7 @@ $(document).ready(function(){
 
     $('#go').click(function () {
         console.log("hello login page");
-        var email = $('#existinguser').val();
+        email = $('#existinguser').val();
         // add check for when button pressed with no email given
 
         window.location.replace("/home?email=" + email);
