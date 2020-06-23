@@ -55,11 +55,15 @@ $(document).ready(function(){
 		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle(); // hiding edit and showing add for the new row
         $('[data-toggle="tooltip"]').tooltip(); 
 
-        datepicker = $( "#datepicker" ).datepicker();
+        datepicker = $( "#datepicker" ).datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
 
         // wickedpicker code from https://github.com/ericjgagnon/wickedpicker
         timepicker = $('.timepicker').wickedpicker({
+            twentyFour: true,
             showSeconds: true,
+            timeSeparator: ':',
             upArrow: 'wickedpicker__controls__control-up',  //The up arrow class selector to use, for custom CSS
             downArrow: 'wickedpicker__controls__control-down', //The down arrow class selector to use, for custom CSS
             close: 'wickedpicker__close', //The close class selector to use, for custom CSS
@@ -108,8 +112,10 @@ $(document).ready(function(){
             // get date and time from datepicker and wickedpicker
             var date = datepicker.val();
             console.log("date " + date);
-            var time = timepicker.wickedpicker('time');
+            // var time = ('#timepicker').wickedpicker('time');
+            var time = timepicker.val();
             
+    
             console.log("time " + time);
             var startDate = date + ' ' + time;
             console.log("start date: " + startDate);
@@ -141,26 +147,6 @@ $(document).ready(function(){
         $(this).parents("tr").remove();
 		$(".add-new").removeAttr("disabled");
     });
-
-
-
-   
-
-
-    // hardcoding example input to test
-    // $('#newplant').click(function () {
-    //     console.log("adding" + TEMP_PLANT_NAME);
-    //     let plantName = TEMP_PLANT_NAME;
-    //     let comments = "direct sunlight";
-    //     let interval = 'weeks';
-    //     let frequency = 2;
-    //     // format of time will be from jquery datetime picker
-    //     let start_date = '30-05-2020 18:00:00'
-
-    //     // send post request
-      
-    //     });
-    // });
 
 
     $('#calendar').click(function () {
