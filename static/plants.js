@@ -21,6 +21,12 @@ var dropdown = `<div class="form-group">
                 </select>
                 </div>`
 
+
+
+var datepicker;
+var timepicker;
+
+
 $(document).ready(function(){
 
      // Get the current user email from flask
@@ -49,10 +55,10 @@ $(document).ready(function(){
 		$("table tbody tr").eq(index + 1).find(".add, .edit").toggle(); // hiding edit and showing add for the new row
         $('[data-toggle="tooltip"]').tooltip(); 
 
-        $( "#datepicker" ).datepicker();
+        datepicker = $( "#datepicker" ).datepicker();
 
         // wickedpicker code from https://github.com/ericjgagnon/wickedpicker
-        $('.timepicker').wickedpicker({
+        timepicker = $('.timepicker').wickedpicker({
             showSeconds: true,
             upArrow: 'wickedpicker__controls__control-up',  //The up arrow class selector to use, for custom CSS
             downArrow: 'wickedpicker__controls__control-down', //The down arrow class selector to use, for custom CSS
@@ -79,7 +85,7 @@ $(document).ready(function(){
 			} else{
                 $(this).removeClass("error");
             }
-        });
+        }); 
         
         if(empty){
             $(this).parents("tr").find(".error").first().focus(); // focus - the empty cell is now active to type in
@@ -98,11 +104,13 @@ $(document).ready(function(){
             let frequency = freqBeforeSplit.split(" ")[1];
             console.log("interval" + interval);
             console.log("freq" + frequency);
-
-            var date = $("#datepicker").datepicker({ dateFormat: 'dd-MM-yyyy' }).val();
-            var timepicker = $('.timepicker').wickedpicker();
+            
+            // get date and time from datepicker and wickedpicker
+            var date = datepicker.val();
+            console.log("date " + date);
             var time = timepicker.wickedpicker('time');
-            console.log("time" + time);
+            
+            console.log("time " + time);
             var startDate = date + ' ' + time;
             console.log("start date: " + startDate);
 
