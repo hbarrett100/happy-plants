@@ -135,7 +135,25 @@ $(document).ready(function () {
                 $(this).parents("tr").find(".add, .edit").toggle(); // change add button to edit
                 $(".add-new").removeAttr("disabled"); // enable the add new button again
             }
+
+                // Delete row on delete button click
+            $(".delete").click(function () {
+
+                console.log("inside delete");
+
+                //send get request to remove plant route to remove plant from database and calendar
+                $.post("/remove_plant", { email: email, plant_name: plantName }, function (result) {
+                    if (result) {
+                        console.log('deleted');
+                        $('#calendar-test').html("Event deleted")
+                    }
+                })
+                $(this).parents("tr").remove();
+                $(".add-new").removeAttr("disabled");
+            });
         });
+
+         
 
     });
 
@@ -151,20 +169,8 @@ $(document).ready(function () {
     });
 
 
-    
-    // Delete row on delete button click
-    $(document).on("click", ".delete", function () {
 
-        //send get request to remove plant route to remove plant from database and calendar
-        $.post("/remove_plant", { email: email, plant_name: plantName }, function (result) {
-            if (result) {
-                console.log('deleted');
-                $('#calendar-test').html("Event deleted")
-            }
-        })
-        $(this).parents("tr").remove();
-        $(".add-new").removeAttr("disabled");
-    });
+   
 
 
 
