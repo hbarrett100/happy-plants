@@ -147,11 +147,12 @@ def add_to_calendar():
 
 
 # route: delete plant from db and delete event
-@app.route('/remove_plant')
+@app.route('/remove_plant', methods=['GET', 'POST'])
 def remove_plant():
+    if request.method == 'POST':
         #remove event from calendar
-        user_email = request.args.get('email')
-        plant_name = request.args.get('plant')
+        user_email = request.form.get('email')
+        plant_name = request.form.get('plant_name')
         plant_to_delete = session.query(Plant).filter_by(email=user_email, plant=plant_name).first()
 
         event_id = plant_to_delete.id

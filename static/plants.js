@@ -27,12 +27,6 @@ var datepicker;
 var timepicker;
 
 $(document).ready(function () {
-
-
-
-    let plant = "{{user_plants_info}}"
-
-
     // adapted from basic table at https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
 
     $('[data-toggle="tooltip"]').tooltip();
@@ -155,8 +149,19 @@ $(document).ready(function () {
         $(this).parents("tr").find(".add, .edit").toggle();
         $(".add-new").attr("disabled", "disabled");
     });
+
+
+    
     // Delete row on delete button click
     $(document).on("click", ".delete", function () {
+
+        //send get request to remove plant route to remove plant from database and calendar
+        $.post("/remove_plant", { email: email, plant_name: plantName }, function (result) {
+            if (result) {
+                console.log('deleted');
+                $('#calendar-test').html("Event deleted")
+            }
+        })
         $(this).parents("tr").remove();
         $(".add-new").removeAttr("disabled");
     });
@@ -165,15 +170,15 @@ $(document).ready(function () {
 
     // function to remove a plant from database and calendar
     // no need to have any callback function here? 
-    $('#delete').click(function () {
-        let plantName = TEMP_PLANT_NAME;
-        console.log('inside delete');
-        $.get("/remove_plant", { email: CURRENT_USER, plant: 'hbb' }, function (result) {
-            if (result) {
-                $('#calendar-test').html("Event deleted")
-            }
-        })
-    });
+    // $('#delete').click(function () {
+    //     let plantName = TEMP_PLANT_NAME;
+    //     console.log('inside delete');
+    //     $.get("/remove_plant", { email: CURRENT_USER, plant: 'hbb' }, function (result) {
+    //         if (result) {
+    //             $('#calendar-test').html("Event deleted")
+    //         }
+    //     })
+    // });
 
 
     // function to edit content of a plant in the database
@@ -195,6 +200,7 @@ $(document).ready(function () {
         });
     });
 
+    // go button on login page redirects to homepage when clicked
     $('#go').click(function () {
         console.log("hello login page");
         email = $('#existinguser').val();
