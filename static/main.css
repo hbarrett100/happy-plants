@@ -28,7 +28,7 @@ body, html {
 }
 
 .landing-text h1 { 
-	font-size: 500%;
+	font-size: 550%;
 	font-weight: 700;
 	opacity: 1;
 
@@ -94,6 +94,7 @@ table {
 	display: block;
 	height : 380px;
 	overflow-y : scroll;
+	overflow-x: scroll;
 	border: none;
 }
 
@@ -137,8 +138,20 @@ table.table td .add {
 }
 
 
+.table-responsive-ms {
+    display: table;
+} 
+
+
+
+/* date and time pickers */
 #datepicker {
 	width: 90px;
+}
+
+#ui-datepicker-div {
+	height: 250px;
+	width: 240px;
 }
 
 .timepicker {

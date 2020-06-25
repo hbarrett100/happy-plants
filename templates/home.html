@@ -1,6 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
 
+    <!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <div class="container">
+
+        <a class="navbar-brand" href="">Happy Plants</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/login">Logout</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div class="wrapper">
    <!-- https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature -->
     <div class="container">
@@ -9,17 +23,18 @@
                 <div class="row">
                     <div class="col-sm-8"><h2>Welcome!</b></h2></div>
                     <div class="col-sm-4">
-                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                        <button type="button" class="btn btn-success add-new"><i class="fa fa-plus"></i> Add New</button>
                     </div>
                 </div>
             </div>
-            <table class="table">
-                <thead>
+            <div class="table-responsive-md">
+            <table class="table table-hover">
+                <thead class="thead-light">
                     <tr>
                         <th>Plant Name</th>
-                        <th>Watering freqency</th>
-                        <th>Start Date</th>
-                        <th>Watering time</th>
+                        <th>Watering Freqency</th>
+                        <th>Reminder Start Date</th>
+                        <th>Reminder Time</th>
                         <th>Comments</th>
                         <th>Actions</th>
                     </tr>
@@ -63,6 +78,7 @@
                     </tr>      
                 </tbody>
             </table>
+        </div>
         </div>
     </div>
 </div>
