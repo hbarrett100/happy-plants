@@ -25,7 +25,6 @@ var plantName;
 var comments;
 var datepicker;
 var timepicker;
-var email;
 
 $(document).ready(function(){
 
@@ -34,12 +33,11 @@ $(document).ready(function(){
      let plant = "{{user_plants_info}}"
 
    
-    // https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
+    // adapted from basic table at https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
 
 	$('[data-toggle="tooltip"]').tooltip();
     var actions = $("table td:last-child").html(); //add html for all buttons to var
     
-
 	// Append table with add row form on add new button click
     $(".add-new").click(function(){
 		$(this).attr("disabled", "disabled"); //disable button
