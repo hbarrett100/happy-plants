@@ -136,26 +136,15 @@ $(document).ready(function () {
                 $(".add-new").removeAttr("disabled"); // enable the add new button again
             }
 
-                // Delete row on delete button click
-            $(".delete").click(function () {
-
-                console.log("inside delete");
-
-                //send get request to remove plant route to remove plant from database and calendar
-                $.post("/remove_plant", { email: email, plant_name: plantName }, function (result) {
-                    if (result) {
-                        console.log('deleted');
-                        $('#calendar-test').html("Event deleted")
-                    }
-                })
-                $(this).parents("tr").remove();
-                $(".add-new").removeAttr("disabled");
-            });
+         
         });
 
-         
+        addOnClickDelete();
 
     });
+
+    addOnClickDelete();
+
 
     // Edit row on edit button click
     $(document).on("click", ".edit", function () {
@@ -221,4 +210,21 @@ $(document).ready(function () {
 
 
 
+    // Delete row on delete button click
+    function addOnClickDelete(){
+    $(".delete").click(function () {
+
+        console.log("inside delete");
+        var plant = $(this).attr("data-plant");
+    //send get request to remove plant route to remove plant from database and calendar
+        $.post("/remove_plant", { email: email, plant_name: plant }, function (result) {
+            if (result) {
+                console.log('deleted');
+                $('#calendar-test').html("Event deleted")
+            }
+        });
+        $(this).parents("tr").remove();
+        $(".add-new").removeAttr("disabled");
+    });
+}
 

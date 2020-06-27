@@ -91,11 +91,11 @@ def new_plant():
 @app.route('/add_to_calendar', methods=['GET', 'POST'])
 def add_to_calendar():
     if request.method == 'POST':
-        freq = request.form.get("frequency")
-        if (freq == 'weeks' or freq == 'week'):
-            freq = 'WEEKLY'
-        elif (freq == 'days' or freq == 'day'):
-            freq = 'DAILY'
+        interval = request.form.get("interval")
+        if (interval == 'weeks' or interval == 'week'):
+            interval = 'WEEKLY'
+        elif (interval == 'days' or interval == 'day'):
+            interval = 'DAILY'
 
         # split datetime for google calendar format
         date, time = request.form.get("start_date").split(' ')
@@ -117,7 +117,7 @@ def add_to_calendar():
             'timeZone': 'Europe/Zurich'
         },
         'recurrence': [
-            'RRULE:FREQ='+ freq + ';INTERVAL=' + request.form.get("interval")+';COUNT=50',
+            'RRULE:FREQ='+ interval + ';INTERVAL=' + request.form.get("frequency")+';COUNT=50',
         ],
         'attendees': [
             {'email': 'hmbarrett92@gmail.com'},
@@ -153,19 +153,24 @@ def remove_plant():
         #remove event from calendar
         user_email = request.form.get("email")
         plant_name = request.form.get("plant_name")
+        print(user_email, plant_name)
         plant_to_delete = session.query(Plant).filter_by(email=user_email, plant=plant_name).first()
 
         event_id = plant_to_delete.id
+        print(event_id)
         instances = events.get_calendar().events().instances(calendarId='primary', eventId=event_id).execute()
 
         # Select the instance to cancel.
         instance = instances['items'][0]
         instance['status'] = 'cancelled'
 
-        updated_instance = events.get_calendar().events().update(calendarId='primary', eventId=instance['id'], body=instance).execute()
+
+
+
+        updated_instance = events.get_calendar().events().delete(calendarId='primary', eventId=instance['id'], sendUpdates='all').execute()
 
         
-        print(updated_instance['updated'])
+        print(updated_instance)
         print('event removed from cal')
 
         #remove plant from database

@@ -36,6 +36,9 @@ class Plant(Base):
       }
 
       return plant_dict
+   
+   def to_json(self):
+      return json.dumps(self.to_dict())
 
       #add repr that returns json
 
