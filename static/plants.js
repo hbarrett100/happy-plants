@@ -97,8 +97,8 @@ $(document).ready(function () {
 
                 // split watering frequency into interval and frequency
                 let freqBeforeSplit = $('#frequency').val();
-                let interval = freqBeforeSplit.split(" ")[0];
-                let frequency = freqBeforeSplit.split(" ")[1];
+                let interval = freqBeforeSplit.split(" ")[1];
+                let frequency = freqBeforeSplit.split(" ")[0];
                 console.log("interval" + interval);
                 console.log("freq" + frequency);
 
