@@ -99,7 +99,14 @@ def add_to_calendar():
 
         # split datetime for google calendar format
         date, time = request.form.get("start_date").split(' ')
+        print(request.form.get("start_date"))
         start_date = date[6:10] + date[2:6] + date[:2]
+
+        #set until for recurrence rule
+        year, month, date = start_date.split('-')
+        year_until = int(year)+1
+        time_until = time.replace(":","")
+        until = f"{year_until}{month}{date}T{time_until}Z"
 
 
         # end time of event one hour after start time
@@ -117,7 +124,7 @@ def add_to_calendar():
             'timeZone': 'Europe/Zurich'
         },
         'recurrence': [
-            'RRULE:FREQ='+ interval + ';INTERVAL=' + request.form.get("frequency")+';COUNT=50',
+            'RRULE:FREQ='+ interval + ';INTERVAL=' + request.form.get("frequency")+';UNTIL='+until,
         ],
         'attendees': [
             {'email': 'hmbarrett92@gmail.com'},
@@ -126,7 +133,6 @@ def add_to_calendar():
             'reminders': {
             'useDefault': False,
             'overrides': [
-            {'method': 'email', 'minutes': 60},
             {'method': 'popup', 'minutes': 10},
             ],
         },
@@ -158,14 +164,17 @@ def remove_plant():
 
         event_id = plant_to_delete.id
         print(event_id)
-        instances = events.get_calendar().events().instances(calendarId='primary', eventId=event_id).execute()
+        instances = events.get_calendar().events().list(calendarId='primary', singleEvents=True).execute()
+
+
+        print(instances)
+
 
         # Select the instance to cancel.
         instance = instances['items'][0]
         instance['status'] = 'cancelled'
 
-
-
+        #need to update the recurrence count/end date first in order to delete all instances of event
 
         updated_instance = events.get_calendar().events().delete(calendarId='primary', eventId=instance['id'], sendUpdates='all').execute()
 

@@ -30,7 +30,10 @@ $(document).ready(function () {
     // adapted from basic table at https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
 
     $('[data-toggle="tooltip"]').tooltip();
-    var actions = $("table td:last-child").html(); //add html for all buttons to var
+
+    var actions = `<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+    <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+    <a class="delete" title="Delete" data-toggle="tooltip" data-plant=""><i class="material-icons">&#xE872;</i></a>`;
 
     // Append table with add row form on add new button click
     $(".add-new").click(function () {
@@ -68,9 +71,8 @@ $(document).ready(function () {
         });
 
 
-
         // Add row on add button click
-        $(".add").click(function () {
+        $('.add').click(function () {
             var empty = false; // flag
             var input = $(this).parents("tr").find('input[type="text"]'); // get input boxes in this row
 
@@ -114,6 +116,10 @@ $(document).ready(function () {
 
                 let plantName = plant.val();
                 console.log(plantName);
+
+                
+                $(this).parents("tr").find(".delete").attr("data-plant", plantName);
+
                 let commentsValue = comments.val();
                 console.log(commentsValue);
 
