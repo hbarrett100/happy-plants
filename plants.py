@@ -40,7 +40,9 @@ def home():
     user_plants_info = []
     #plant is an instance of plant object
     for plant in all_plants:
+        print(plant.plant)
         user_plants_info.append(plant.to_json())
+    print("printing plants:" , user_plants_info)
 
     return render_template('home.html', user_plants_info = user_plants_info, user_email=user_email)
 
