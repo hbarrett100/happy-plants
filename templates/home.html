@@ -2,18 +2,13 @@
 {% block content %}
 
     <!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
-    <div class="container">
-
-        <a class="navbar-brand" href="">Happy Plants</a>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto my-2 my-lg-0">
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/login">Logout</a></li>
-
-            </ul>
-        </div>
-    </div>
-</nav>
+    <!-- nav bar from https://getbootstrap.com/docs/4.0/components/navbar/ -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3">
+        <a class="navbar-brand" href="#">Happy Plants</a>
+            <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link nav-top" href="/login">Logout</a>
+            </div>
+      </nav>
 
 <div class="wrapper">
    <!-- https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature -->
@@ -27,6 +22,7 @@
                     </div>
                 </div>
             </div>
+        <div class="table-responsive"> 
             <table class="table table-hover">
                 <thead class="thead-light">
                     <tr>
@@ -55,6 +51,7 @@
                     </tr>
                     {% endfor %}
                 </tbody>
+                </table>
             </div>
         </div>
     </div>

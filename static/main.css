@@ -94,7 +94,7 @@ table {
 	display: block;
 	height : 380px;
 	overflow-y : scroll;
-	overflow-x: scroll;
+	overflow-x: auto;
 	border: none;
 }
 
@@ -138,9 +138,14 @@ table.table td .add {
 }
 
 
-.table-responsive-ms {
-    display: table;
+.table-responsive {
+	display: table;
+	overflow-x: auto;
 } 
+
+/* .wrapper {
+	overflow-x: auto;
+} */
 
 
 
@@ -167,4 +172,19 @@ table.table td .add {
 	.landing-text h1{
 		font-size: 400%;
 	}
+
+	table {
+		overflow-x: auto;
+	}
+
+	#bg-img {
+		background: url(plantbg2.jpg) no-repeat center center fixed;
+		display: table;
+		height: 100%;
+		position: relative;
+		width: 100%;
+		background-size: cover;
+		opacity: 0.7;
+	}
+	
 }
