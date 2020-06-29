@@ -162,3 +162,9 @@ table.table td .add {
 	color: white;
 	background-color :#808080;
 }
+
+@media (max-width: 768px) {
+	.landing-text h1{
+		font-size: 400%;
+	}
+}
