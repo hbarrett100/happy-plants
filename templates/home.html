@@ -1,6 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
 
+    <!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+    <div class="container">
+
+        <a class="navbar-brand" href="">Happy Plants</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/login">Logout</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div class="wrapper">
    <!-- https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature -->
     <div class="container">
@@ -9,49 +23,42 @@
                 <div class="row">
                     <div class="col-sm-8"><h2>Welcome!</b></h2></div>
                     <div class="col-sm-4">
-                        <button type="button" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                        <button type="button" class="btn btn-default add-new"><i class="fa fa-plus"></i> Add New</button>
                     </div>
                 </div>
             </div>
-            <table class="table table-bordered">
-                <thead>
+            <table class="table table-hover">
+                <thead class="thead-light">
                     <tr>
                         <th>Plant Name</th>
-                        <th>Watering freqency</th>
-                        <th>Start Date</th>
-                        <th>Watering time</th>
+                        <th>Watering Freqency</th>
+                        <th>Reminder Start Date</th>
+                        <th>Reminder Time</th>
                         <th>Comments</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- loop through users plants to display in table -->
+                    {% for plant in user_plants_info %}
                     <tr>
-                        <td>John Doe</td>
-                        <td>Administration</td>
-                        <td>(171) 555-2222</td>
-                        <td>(171) 555-2222</td>
-                        <td>(171) 555-2222</td>
+                        <td>{{ plant.plant }}</td>
+                        <td>{{ plant.frequency }}</td>
+                        <td>{{ plant.date }}</td>
+                        <td>{{ plant.time }}</td>
+                        <td>{{ plant.comments }}</td>
                         <td>
 							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                            <a class="delete" title="Delete" data-toggle="tooltip" data-plant="{{ plant.plant }}"><i class="material-icons">&#xE872;</i></a>
                         </td>
-                    </tr>    
+                    </tr>
+                    {% endfor %}
                 </tbody>
-            </table>
+            </div>
         </div>
     </div>
 </div>
-
-
-
-
-<p id="homepage-error">test</p>
-<p id="calendar-test">cal test</p>
-<button id='newplant'>Add new plant</button>
-<button id='calendar'>Add to calendar</button>
-<button id='delete'>delete plant</button>
-<button id='edit'>edit plant</button>
 
 
 {% endblock %}

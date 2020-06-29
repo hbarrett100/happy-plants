@@ -40,9 +40,7 @@ def home():
     user_plants_info = []
     #plant is an instance of plant object
     for plant in all_plants:
-        print(plant.plant)
-        user_plants_info.append(plant.to_json())
-    print("printing plants:" , user_plants_info)
+        user_plants_info.append(plant.to_dict())
 
     return render_template('home.html', user_plants_info = user_plants_info, user_email=user_email)
 
@@ -93,15 +91,22 @@ def new_plant():
 @app.route('/add_to_calendar', methods=['GET', 'POST'])
 def add_to_calendar():
     if request.method == 'POST':
-        freq = request.form.get("frequency")
-        if (freq == 'weeks' or freq == 'week'):
-            freq = 'WEEKLY'
-        elif (freq == 'days' or freq == 'day'):
-            freq = 'DAILY'
+        interval = request.form.get("interval")
+        if (interval == 'weeks' or interval == 'week'):
+            interval = 'WEEKLY'
+        elif (interval == 'days' or interval == 'day'):
+            interval = 'DAILY'
 
         # split datetime for google calendar format
         date, time = request.form.get("start_date").split(' ')
+        print(request.form.get("start_date"))
         start_date = date[6:10] + date[2:6] + date[:2]
+
+        #set until for recurrence rule
+        year, month, date = start_date.split('-')
+        year_until = int(year)+1
+        time_until = time.replace(":","")
+        until = f"{year_until}{month}{date}T{time_until}Z"
 
 
         # end time of event one hour after start time
@@ -119,7 +124,7 @@ def add_to_calendar():
             'timeZone': 'Europe/Zurich'
         },
         'recurrence': [
-            'RRULE:FREQ='+ freq + ';INTERVAL=' + request.form.get("interval")+';COUNT=50',
+            'RRULE:FREQ='+ interval + ';INTERVAL=' + request.form.get("frequency")+';UNTIL='+until,
         ],
         'attendees': [
             {'email': 'hmbarrett92@gmail.com'},
@@ -128,7 +133,6 @@ def add_to_calendar():
             'reminders': {
             'useDefault': False,
             'overrides': [
-            {'method': 'email', 'minutes': 60},
             {'method': 'popup', 'minutes': 10},
             ],
         },
@@ -149,24 +153,33 @@ def add_to_calendar():
 
 
 # route: delete plant from db and delete event
-@app.route('/remove_plant')
+@app.route('/remove_plant', methods=['GET', 'POST'])
 def remove_plant():
+    if request.method == 'POST':
         #remove event from calendar
-        user_email = request.args.get('email')
-        plant_name = request.args.get('plant')
+        user_email = request.form.get("email")
+        plant_name = request.form.get("plant_name")
+        print(user_email, plant_name)
         plant_to_delete = session.query(Plant).filter_by(email=user_email, plant=plant_name).first()
 
         event_id = plant_to_delete.id
-        instances = events.get_calendar().events().instances(calendarId='primary', eventId=event_id).execute()
+        print(event_id)
+        instances = events.get_calendar().events().list(calendarId='primary', singleEvents=True).execute()
+
+
+        print(instances)
+
 
         # Select the instance to cancel.
         instance = instances['items'][0]
         instance['status'] = 'cancelled'
 
-        updated_instance = events.get_calendar().events().update(calendarId='primary', eventId=instance['id'], body=instance).execute()
+        #need to update the recurrence count/end date first in order to delete all instances of event
+
+        updated_instance = events.get_calendar().events().delete(calendarId='primary', eventId=instance['id'], sendUpdates='all').execute()
 
         
-        print(updated_instance['updated'])
+        print(updated_instance)
         print('event removed from cal')
 
         #remove plant from database

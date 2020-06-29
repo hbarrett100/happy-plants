@@ -27,16 +27,13 @@ var datepicker;
 var timepicker;
 
 $(document).ready(function () {
-
-
-
-    let plant = "{{user_plants_info}}"
-
-
     // adapted from basic table at https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
 
     $('[data-toggle="tooltip"]').tooltip();
-    var actions = $("table td:last-child").html(); //add html for all buttons to var
+
+    var actions = `<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+    <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+    <a class="delete" title="Delete" data-toggle="tooltip" data-plant=""><i class="material-icons">&#xE872;</i></a>`;
 
     // Append table with add row form on add new button click
     $(".add-new").click(function () {
@@ -74,9 +71,8 @@ $(document).ready(function () {
         });
 
 
-
         // Add row on add button click
-        $(".add").click(function () {
+        $('.add').click(function () {
             var empty = false; // flag
             var input = $(this).parents("tr").find('input[type="text"]'); // get input boxes in this row
 
@@ -103,8 +99,8 @@ $(document).ready(function () {
 
                 // split watering frequency into interval and frequency
                 let freqBeforeSplit = $('#frequency').val();
-                let interval = freqBeforeSplit.split(" ")[0];
-                let frequency = freqBeforeSplit.split(" ")[1];
+                let interval = freqBeforeSplit.split(" ")[1];
+                let frequency = freqBeforeSplit.split(" ")[0];
                 console.log("interval" + interval);
                 console.log("freq" + frequency);
 
@@ -120,6 +116,10 @@ $(document).ready(function () {
 
                 let plantName = plant.val();
                 console.log(plantName);
+
+                
+                $(this).parents("tr").find(".delete").attr("data-plant", plantName);
+
                 let commentsValue = comments.val();
                 console.log(commentsValue);
 
@@ -141,9 +141,16 @@ $(document).ready(function () {
                 $(this).parents("tr").find(".add, .edit").toggle(); // change add button to edit
                 $(".add-new").removeAttr("disabled"); // enable the add new button again
             }
+
+         
         });
 
+        addOnClickDelete();
+
     });
+
+    addOnClickDelete();
+
 
     // Edit row on edit button click
     $(document).on("click", ".edit", function () {
@@ -155,25 +162,24 @@ $(document).ready(function () {
         $(this).parents("tr").find(".add, .edit").toggle();
         $(".add-new").attr("disabled", "disabled");
     });
-    // Delete row on delete button click
-    $(document).on("click", ".delete", function () {
-        $(this).parents("tr").remove();
-        $(".add-new").removeAttr("disabled");
-    });
+
+
+
+   
 
 
 
     // function to remove a plant from database and calendar
     // no need to have any callback function here? 
-    $('#delete').click(function () {
-        let plantName = TEMP_PLANT_NAME;
-        console.log('inside delete');
-        $.get("/remove_plant", { email: CURRENT_USER, plant: 'hbb' }, function (result) {
-            if (result) {
-                $('#calendar-test').html("Event deleted")
-            }
-        })
-    });
+    // $('#delete').click(function () {
+    //     let plantName = TEMP_PLANT_NAME;
+    //     console.log('inside delete');
+    //     $.get("/remove_plant", { email: CURRENT_USER, plant: 'hbb' }, function (result) {
+    //         if (result) {
+    //             $('#calendar-test').html("Event deleted")
+    //         }
+    //     })
+    // });
 
 
     // function to edit content of a plant in the database
@@ -195,6 +201,7 @@ $(document).ready(function () {
         });
     });
 
+    // go button on login page redirects to homepage when clicked
     $('#go').click(function () {
         console.log("hello login page");
         email = $('#existinguser').val();
@@ -209,4 +216,21 @@ $(document).ready(function () {
 
 
 
+    // Delete row on delete button click
+    function addOnClickDelete(){
+    $(".delete").click(function () {
+
+        console.log("inside delete");
+        var plant = $(this).attr("data-plant");
+    //send get request to remove plant route to remove plant from database and calendar
+        $.post("/remove_plant", { email: email, plant_name: plant }, function (result) {
+            if (result) {
+                console.log('deleted');
+                $('#calendar-test').html("Event deleted")
+            }
+        });
+        $(this).parents("tr").remove();
+        $(".add-new").removeAttr("disabled");
+    });
+}
 

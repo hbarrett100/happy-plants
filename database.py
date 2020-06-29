@@ -24,18 +24,21 @@ class Plant(Base):
    date = Column(DateTime)
    id = Column(String(50))
 
-   # convert to JSON to send back to front end
-   def to_json(self):
+   # convert to dict to send back to front end
+   def to_dict(self):
       plant_dict = {
          "plant": self.plant,
          "comments": self.comments,
-         "interval": self.interval,
-         "frequency": self.frequency,
+         "frequency": f'{self.frequency} {self.interval}',
          "date": '{:%d/%m/%Y}'.format(self.date),
+         "time": '{:%H:%M:%S}'.format(self.date),
          "id": self.id
       }
 
-      return json.dumps(plant_dict)
+      return plant_dict
+   
+   def to_json(self):
+      return json.dumps(self.to_dict())
 
       #add repr that returns json
 

@@ -28,7 +28,7 @@ body, html {
 }
 
 .landing-text h1 { 
-	font-size: 500%;
+	font-size: 550%;
 	font-weight: 700;
 	opacity: 1;
 
@@ -87,7 +87,17 @@ body, html {
 }
 table.table {
 	table-layout: fixed;
+	overflow-x: scroll;
 }
+
+table {
+	display: block;
+	height : 380px;
+	overflow-y : scroll;
+	overflow-x: scroll;
+	border: none;
+}
+
 table.table tr th, table.table tr td {
 	border-color: #e9e9e9;
 }
@@ -128,10 +138,33 @@ table.table td .add {
 }
 
 
+.table-responsive-ms {
+    display: table;
+} 
+
+
+
+/* date and time pickers */
 #datepicker {
 	width: 90px;
 }
 
+#ui-datepicker-div {
+	height: 250px;
+	width: 240px;
+}
+
 .timepicker {
 	width: 90px;
+}
+
+.btn-default {
+	color: white;
+	background-color :#808080;
+}
+
+@media (max-width: 768px) {
+	.landing-text h1{
+		font-size: 400%;
+	}
 }
