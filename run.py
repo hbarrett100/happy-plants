@@ -164,22 +164,20 @@ def remove_plant():
 
         event_id = plant_to_delete.id
         print(event_id)
-        instances = events.get_calendar().events().list(calendarId='primary', singleEvents=True).execute()
+        # instances = events.get_calendar().events().get(calendarId='primary', eventId=event_id).execute()
 
 
-        print(instances)
-
-
-        # Select the instance to cancel.
-        instance = instances['items'][0]
-        instance['status'] = 'cancelled'
+        # # Select the instance to cancel.
+        # instance = instances['items'][0]
+        # print(instances)
+        # # instance['status'] = 'cancelled'
 
         #need to update the recurrence count/end date first in order to delete all instances of event
 
-        updated_instance = events.get_calendar().events().delete(calendarId='primary', eventId=instance['id'], sendUpdates='all').execute()
+        updated_instance = events.get_calendar().events().delete(calendarId='primary', eventId=event_id, sendUpdates='all').execute()
 
-        
-        print(updated_instance)
+
+
         print('event removed from cal')
 
         #remove plant from database
