@@ -24,9 +24,10 @@ var dropdown = `<div class="form-group">
 var plantName;
 var comments;
 var datepicker;
-var timepicker;
+
 
 $(document).ready(function () {
+    var timepicker;
     // adapted from basic table at https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature
 
     $('[data-toggle="tooltip"]').tooltip();
@@ -43,7 +44,7 @@ $(document).ready(function () {
             '<td><input type="text" class="form-control" name="plant" id="plant"></td>' +
             '<td>' + dropdown + '</td>' +
             '<td><input type="text" id="datepicker"></td>' +
-            '<td><input type="text" name="timepicker" class="timepicker"/></td>' +
+            '<td><input type="text" class="timepicker"></td>' +
             '<td><input type="text" class="form-control" name="comments" id="comments"></input></td>' +
             '<td>' + actions + '</td>' +
             '</tr>';
@@ -57,18 +58,14 @@ $(document).ready(function () {
 
         var plant = $("#plant")
         var comments = $("#comments")
-        // wickedpicker code from https://github.com/ericjgagnon/wickedpicker
-        timepicker = $('.timepicker').wickedpicker({
-            twentyFour: true,
-            showSeconds: true,
-            timeSeparator: ':',
-            upArrow: 'wickedpicker__controls__control-up',  //The up arrow class selector to use, for custom CSS
-            downArrow: 'wickedpicker__controls__control-down', //The down arrow class selector to use, for custom CSS
-            close: 'wickedpicker__close', //The close class selector to use, for custom CSS
-            hoverState: 'hover-state', //The hover state class to use, for custom CSS
-            title: 'Choose a time', //The Wickedpicker's title,
 
+
+        timepicker = $('.timepicker').timepicker({
+            timeFormat: 'HH:mm:ss',
+            scrollbar: true,
+            zindex: 1000,
         });
+        
 
 
         // Add row on add button click
@@ -202,15 +199,66 @@ $(document).ready(function () {
     });
 
     // go button on login page redirects to homepage when clicked
-    $('#go').click(function () {
-        console.log("hello login page");
-        email = $('#existinguser').val();
+
+    // if(!$('#existinguser').val()) {
+    //     console.log("no email given");
+    //     empty = true;
+
+
+    //     if (empty) {
+    //         $('#existinguser').addClass("error"); // if no value add class error
+    //         $('#existinguser').focus();
+    //     }
+    // } 
+    //     $('#go').removeClass('disabled');
+
+
+    $('#existinguser').keyup(function () {
+        if ($(this).val() == '') {
+            $('#go').attr('disabled', "disabled")
+                .addClass("disabled");
+            console.log("go disabled");
+        } else {
+            console.log("go not disabled");
+            $('#go').removeAttr('disabled')
+                .removeClass("disabled");
+        }
+    });
+
+
+
+
+
+        $('#go').click(function () {
+            // empty = false;
+            // console.log("inside go");
+            // if (!$('#existinguser').val()) {
+            //     empty = true;
+            //     console.log("inside if");
+            //     $('#existinguser').addClass("error"); // if no value add class error
+            //     $('#existinguser').focus();
+            // }
+            // if (!empty) {
+            //     console.log("inside else if");
+            //     $('#go').removeClass('disabled');
+            email = $('#existinguser').val();
+            window.location.replace("/home?email=" + email);
+        });
+
+           
+            
+    // });
+
+       
+        // } else 
+        //     $("#go").removeClass('disabled');
+            
         // add check for when button pressed with no email given
 
-        window.location.replace("/home?email=" + email);
+       
 
 
-    });
+    // });
 
 });
 
