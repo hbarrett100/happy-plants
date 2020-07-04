@@ -159,26 +159,7 @@ $(document).ready(function () {
         $(this).parents("tr").find(".add, .edit").toggle();
         $(".add-new").attr("disabled", "disabled");
     });
-
-
-
-   
-
-
-
-    // function to remove a plant from database and calendar
-    // no need to have any callback function here? 
-    // $('#delete').click(function () {
-    //     let plantName = TEMP_PLANT_NAME;
-    //     console.log('inside delete');
-    //     $.get("/remove_plant", { email: CURRENT_USER, plant: 'hbb' }, function (result) {
-    //         if (result) {
-    //             $('#calendar-test').html("Event deleted")
-    //         }
-    //     })
-    // });
-
-
+    
     // function to edit content of a plant in the database
     // hard coding example input to test
     $('#edit').click(function () {
