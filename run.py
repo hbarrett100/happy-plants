@@ -178,8 +178,6 @@ def remove_plant():
         return 'true'
 
 
-
-
 # edit entry in db and edit event
 
 #when table is made, use jquery to save old input value before the onchange to new value

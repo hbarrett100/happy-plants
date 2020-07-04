@@ -159,26 +159,7 @@ $(document).ready(function () {
         $(this).parents("tr").find(".add, .edit").toggle();
         $(".add-new").attr("disabled", "disabled");
     });
-
-
-
-   
-
-
-
-    // function to remove a plant from database and calendar
-    // no need to have any callback function here? 
-    // $('#delete').click(function () {
-    //     let plantName = TEMP_PLANT_NAME;
-    //     console.log('inside delete');
-    //     $.get("/remove_plant", { email: CURRENT_USER, plant: 'hbb' }, function (result) {
-    //         if (result) {
-    //             $('#calendar-test').html("Event deleted")
-    //         }
-    //     })
-    // });
-
-
+    
     // function to edit content of a plant in the database
     // hard coding example input to test
     $('#edit').click(function () {
@@ -198,70 +179,24 @@ $(document).ready(function () {
         });
     });
 
-    // go button on login page redirects to homepage when clicked
+    // check for valid email at login
+    $("form[name='login']").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+        },
+        messages: {
+            email: "Please enter a valid email address"
+        },
+        submitHandler: function (form) {
 
-    // if(!$('#existinguser').val()) {
-    //     console.log("no email given");
-    //     empty = true;
-
-
-    //     if (empty) {
-    //         $('#existinguser').addClass("error"); // if no value add class error
-    //         $('#existinguser').focus();
-    //     }
-    // } 
-    //     $('#go').removeClass('disabled');
-
-
-    $('#existinguser').keyup(function () {
-        if ($(this).val() == '') {
-            $('#go').attr('disabled', "disabled")
-                .addClass("disabled");
-            console.log("go disabled");
-        } else {
-            console.log("go not disabled");
-            $('#go').removeAttr('disabled')
-                .removeClass("disabled");
+                email = $('#existinguser').val();
+                form.submit();
         }
     });
-
-
-
-
-
-        $('#go').click(function () {
-            // empty = false;
-            // console.log("inside go");
-            // if (!$('#existinguser').val()) {
-            //     empty = true;
-            //     console.log("inside if");
-            //     $('#existinguser').addClass("error"); // if no value add class error
-            //     $('#existinguser').focus();
-            // }
-            // if (!empty) {
-            //     console.log("inside else if");
-            //     $('#go').removeClass('disabled');
-            email = $('#existinguser').val();
-            window.location.replace("/home?email=" + email);
-        });
-
-           
-            
-    // });
-
-       
-        // } else 
-        //     $("#go").removeClass('disabled');
-            
-        // add check for when button pressed with no email given
-
-       
-
-
-    // });
-
 });
-
 
 
     // Delete row on delete button click

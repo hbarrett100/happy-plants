@@ -4,12 +4,13 @@
 <div class="container">
     <div class="landing-text">
         <h1>Happy Plants</h1>
-        <div class="form-label-group">
-            <input type="email" id="existinguser" class="form-control" placeholder="Enter email to begin" required autofocus>
+        <form name="login" action="/home">
             <label for="inputEmail"></label>
-          </div> 
-
-        <button type="button" class="btn btn-default btn-lg disabled" id="go" disabled>Go</button>
+            <input type="email" name="email" id="existinguser" class="form-control" placeholder="Email (required)" required autofocus>
+            <div>
+                <button type="submit" class="btn btn-default btn-lg" id="go">Go</button>
+            </div>
+        </form>
     </div>
 </div>
 
