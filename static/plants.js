@@ -34,12 +34,7 @@ $(document).ready(function () {
 
     $('[data-toggle="tooltip"]').tooltip();
 
-    
-
     // Append table with add row form on add new button click
-    // $(".add-new").click(function () {
-        // {currentPlant="", currentComments="", currentInterval="", currentFrequency="", currentStartDate="", edit=""}, 
-
     $(".add-new").click(function(){
         console.log("inside add new click");
         addNewRow()
@@ -47,12 +42,12 @@ $(document).ready(function () {
 
         addOnClickDelete();
 
-
     });
 
 
     // Edit row on edit button click
     $(document).on("click", ".edit", function () {
+        $(this).parents("tr").find(".edit, .add").toggle();
 
         var currentPlantValues = [];
         var val;
@@ -73,33 +68,17 @@ $(document).ready(function () {
         // 2. delete the plant - need to call plant - this is not DRY
         var plant = $(this).attr("data-plant");
         //send get request to remove plant route to remove plant from database and calendar
-        $.post("/remove_plant", { email: email, plant_name: plant }, function (result) {
+        $.post("/remove_plant", { email: email, plant_name: currentPlantValues[0] }, function (result) {
             if (result) {
                 console.log('deleted');
-                $('#calendar-test').html("Event deleted")
             }
         });
         $(this).parents("tr").remove();
         $(".add-new").removeAttr("disabled");
 
-
-
         // 3. call add new function and populate fields with array values
+        addNewRow(currentPlantValues[0], currentPlantValues[1], currentPlantValues[2], currentPlantValues[3], currentPlantValues[4])
 
-        addNewRow(currentPlantValues[0], currentPlantValues[1], currentPlantValues[2], currentPlantValues[3], currentPlantValues[4], edit="")
-
-
-
-        // 4. make sure edit route is called not the add new
-
-
-
-        //get all td elements except the last one
-        // $(this).parents("tr").find("td:not(:last-child)").each(function () {
-        //     $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
-        // });
-        // $(this).parents("tr").find(".add, .edit").toggle();
-        // $(".add-new").attr("disabled", "disabled");
     });
 
     addOnClickDelete();
@@ -145,11 +124,9 @@ function addOnClickDelete() {
     });
 };
 
-function addNewRow(currentPlant="", intervalDropdown="", currentDate="", currentTime="", currentComments="", edit="") {
+function addNewRow(currentPlant="", intervalDropdown="", currentDate="", currentTime="", currentComments="") {
     console.log("inside add new function at bottom");
 
-    // var startingPlantVal = event.data.currentPlant;
-    // console.log("starting plant val: " + startingPlantVal);
     $(this).attr("disabled", "disabled"); //disable button
     var index = $("table tbody tr:last-child").index(); // how many rows we have
     var row = '<tr>' +
@@ -178,11 +155,10 @@ function addNewRow(currentPlant="", intervalDropdown="", currentDate="", current
         zindex: 1000,
     });
 
-
-
     // Add row on add button click
     $('.add').click(function () {
         
+        $(this).parents("tr").find(".edit, .add").toggle();
         var empty = false; // flag
         var input = $(this).parents("tr").find('input[type="text"]'); // get input boxes in this row
 
@@ -248,8 +224,8 @@ function addNewRow(currentPlant="", intervalDropdown="", currentDate="", current
                 }
             });
 
-            $(this).parents("tr").find(".add, .edit").toggle(); // change add button to edit
-            $(".add-new").removeAttr("disabled"); // enable the add new button again
+            // $(this).parents("tr").find(".add, .edit").toggle(); // change add button to edit
+            // $(".add-new").removeAttr("disabled"); // enable the add new button again
         }
 
 
