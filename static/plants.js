@@ -47,14 +47,15 @@ $(document).ready(function () {
 
     // Edit row on edit button click
     $(document).on("click", ".edit", function () {
-        $(this).parents("tr").find(".edit, .add").toggle();
+        
+        
 
         var currentPlantValues = [];
         var val;
         // 1. save current values to an array
         $(this).parents("tr").find("td:not(:last-child)").each(function () {
             if ($(this).is('select')) {
-                console.log("inside select");
+                console.log("inside select"); //not working
                 val = $(this).val();
                 
             } else {
@@ -65,26 +66,19 @@ $(document).ready(function () {
         });
         console.log(currentPlantValues);
 
-        // 2. delete the plant - need to call plant - this is not DRY
-        var plant = $(this).attr("data-plant");
+        // 2. delete the plant - need to call a function - this is not DRY    
         //send get request to remove plant route to remove plant from database and calendar
-        $.post("/remove_plant", { email: email, plant_name: currentPlantValues[0] }, function (result) {
-            if (result) {
-                console.log('deleted');
-            }
-        });
         $(this).parents("tr").remove();
-        $(".add-new").removeAttr("disabled");
-
-        // 3. call add new function and populate fields with array values
-        addNewRow(currentPlantValues[0], currentPlantValues[1], currentPlantValues[2], currentPlantValues[3], currentPlantValues[4])
-
+        $.post("/remove_plant", { email: email, plant_name: currentPlantValues[0] }, function (result) {
+                $(".add-new").removeAttr("disabled");
+                addNewRow(currentPlantValues[0], currentPlantValues[2], currentPlantValues[3], currentPlantValues[4]) // need to send select value 
+        });
+    
+        // $(this).parents("tr").find(".edit, .add").toggle();
+        // $(".add-new").attr("disabled", "disabled");
     });
 
     addOnClickDelete();
-
-
-
 
     // check for valid email at login
     $("form[name='login']").validate({
@@ -124,7 +118,7 @@ function addOnClickDelete() {
     });
 };
 
-function addNewRow(currentPlant="", intervalDropdown="", currentDate="", currentTime="", currentComments="") {
+function addNewRow(currentPlant="", currentDate="", currentTime="", currentComments="") {
     console.log("inside add new function at bottom");
 
     $(this).attr("disabled", "disabled"); //disable button
@@ -155,10 +149,11 @@ function addNewRow(currentPlant="", intervalDropdown="", currentDate="", current
         zindex: 1000,
     });
 
+    console.log("just before add button");
     // Add row on add button click
     $('.add').click(function () {
         
-        $(this).parents("tr").find(".edit, .add").toggle();
+        
         var empty = false; // flag
         var input = $(this).parents("tr").find('input[type="text"]'); // get input boxes in this row
 
@@ -181,7 +176,6 @@ function addNewRow(currentPlant="", intervalDropdown="", currentDate="", current
                 $(this).parent("td").html($(this).val()); // Set the table cell contents as the contents in the input box
             });
 
-            // send post request to route to add plant to database
 
             // split watering frequency into interval and frequency
             let freqBeforeSplit = $('#frequency').val();
@@ -202,13 +196,11 @@ function addNewRow(currentPlant="", intervalDropdown="", currentDate="", current
 
             let plantName = plant.val();
             console.log(plantName);
-
+            let commentsValue = comments.val();
 
             $(this).parents("tr").find(".delete").attr("data-plant", plantName);
-
-            let commentsValue = comments.val();
-            console.log(commentsValue);
-
+            
+            // send post request to route to add plant to database
             $.post("/new_plant", { email: email, plant_name: plantName, comments: commentsValue, interval: interval, frequency: frequency, start_date: startDate }, function (result) {
                 if (result == 'unique constraint') {
                     $('#homepage-error').html("Plant already exists") // still to be implemented!
@@ -217,16 +209,10 @@ function addNewRow(currentPlant="", intervalDropdown="", currentDate="", current
             });
 
             // send post request to add event to google calendar
-            $.post("/add_to_calendar", { email: email, plant_name: plantName, comments: commentsValue, interval: interval, frequency: frequency, start_date: startDate }, function (result) {
-                if (result) {
-                    console.log("added to calendar");
-                    $('#calendar-test').html("Event added to google calendar") // take this out? 
-                }
-            });
-
-            // $(this).parents("tr").find(".add, .edit").toggle(); // change add button to edit
-            // $(".add-new").removeAttr("disabled"); // enable the add new button again
+            $.post("/add_to_calendar", { email: email, plant_name: plantName, comments: commentsValue, interval: interval, frequency: frequency, start_date: startDate });
         }
+            $(this).parents("tr").find(".add, .edit").toggle();
+            $(".add-new").removeAttr("disabled");
 
 
     });
