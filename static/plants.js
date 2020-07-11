@@ -89,6 +89,7 @@ $(document).ready(function () {
             // if no cells are empty execute this code
             if (!empty) {
                 input.each(function () {
+                    console.log(this);
                     $(this).parent("td").html($(this).val()); // Set the table cell contents as the contents in the input box
                 });
 
