@@ -35,8 +35,9 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
     // Append table with add row form on add new button click
-    $(".add-new").click(function(){
+    $(".add-new").click(function () {
         console.log("inside add new click");
+
         addNewRow()
         console.log("under function call");
 
@@ -47,8 +48,7 @@ $(document).ready(function () {
 
     // Edit row on edit button click
     $(document).on("click", ".edit", function () {
-        
-        
+
 
         var currentPlantValues = [];
         var val;
@@ -57,7 +57,7 @@ $(document).ready(function () {
             if ($(this).is('select')) {
                 console.log("inside select"); //not working
                 val = $(this).val();
-                
+
             } else {
                 val = $(this).html();
             }
@@ -70,12 +70,11 @@ $(document).ready(function () {
         //send get request to remove plant route to remove plant from database and calendar
         $(this).parents("tr").remove();
         $.post("/remove_plant", { email: email, plant_name: currentPlantValues[0] }, function (result) {
-                $(".add-new").removeAttr("disabled");
-                addNewRow(currentPlantValues[0], currentPlantValues[2], currentPlantValues[3], currentPlantValues[4]) // need to send select value 
+            $(".add-new").removeAttr("disabled"); 
         });
-    
-        // $(this).parents("tr").find(".edit, .add").toggle();
-        // $(".add-new").attr("disabled", "disabled");
+        addNewRow(currentPlantValues[0], currentPlantValues[2], currentPlantValues[3], currentPlantValues[4]) // need to send select value 
+        $(this).parents("tr").find(".edit, .add").toggle();
+        $(".add-new").attr("disabled", "disabled");
     });
 
     addOnClickDelete();
@@ -118,17 +117,20 @@ function addOnClickDelete() {
     });
 };
 
-function addNewRow(currentPlant="", currentDate="", currentTime="", currentComments="") {
+
+
+function addNewRow(currentPlant = "", currentDate = "", currentTime = "", currentComments = "") {
     console.log("inside add new function at bottom");
 
     $(this).attr("disabled", "disabled"); //disable button
     var index = $("table tbody tr:last-child").index(); // how many rows we have
+    console.log(currentPlant)
     var row = '<tr>' +
-        '<td><input type="text" class="form-control" name="plant" id="plant" value=' + currentPlant + '></td>' +
+        '<td><input type="text" class="form-control" name="plant" id="plant" value="' + currentPlant + '"></td>' +
         '<td>' + dropdown + '</td>' +
-        '<td><input type="text" id="datepicker" value=' + currentDate + '></td>' +
-        '<td><input type="text" class="timepicker" value=' + currentTime + '></td>' +
-        '<td><input type="text" class="form-control" name="comments" id="comments" value=' + currentComments + '></input></td>' +
+        '<td><input type="text" id="datepicker" value="' + currentDate + '"></td>' +
+        '<td><input type="text" class="timepicker" value="' + currentTime + '"></td>' +
+        '<td><input type="text" class="form-control" name="comments" id="comments" value="' + currentComments + '"></input></td>' +
         '<td>' + actions + '</td>' +
         '</tr>';
     $("table").append(row);
@@ -152,8 +154,8 @@ function addNewRow(currentPlant="", currentDate="", currentTime="", currentComme
     console.log("just before add button");
     // Add row on add button click
     $('.add').click(function () {
-        
-        
+
+
         var empty = false; // flag
         var input = $(this).parents("tr").find('input[type="text"]'); // get input boxes in this row
 
@@ -199,7 +201,7 @@ function addNewRow(currentPlant="", currentDate="", currentTime="", currentComme
             let commentsValue = comments.val();
 
             $(this).parents("tr").find(".delete").attr("data-plant", plantName);
-            
+
             // send post request to route to add plant to database
             $.post("/new_plant", { email: email, plant_name: plantName, comments: commentsValue, interval: interval, frequency: frequency, start_date: startDate }, function (result) {
                 if (result == 'unique constraint') {
@@ -211,10 +213,9 @@ function addNewRow(currentPlant="", currentDate="", currentTime="", currentComme
             // send post request to add event to google calendar
             $.post("/add_to_calendar", { email: email, plant_name: plantName, comments: commentsValue, interval: interval, frequency: frequency, start_date: startDate });
         }
-            $(this).parents("tr").find(".add, .edit").toggle();
-            $(".add-new").removeAttr("disabled");
-
-
+        console.log(this);
+        $(this).parents("tr").find(".add, .edit").toggle();
+        $(".add-new").removeAttr("disabled");
     });
 }
 
