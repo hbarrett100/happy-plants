@@ -52,42 +52,18 @@ var UIController = (function () {
                     </select>
                     </div>`
 
-    var row = '<tr>' +
-        '<td><input type="text" class="form-control" name="plant" id="plant"></td>' +
-        '<td>' + dropdown + '</td>' +
-        '<td><input type="text" id="datepicker"></td>' +
-        '<td><input type="text" class="timepicker"></td>' +
-        '<td><input type="text" class="form-control" name="comments" id="comments"></input></td>' +
-        '<td>' + actions + '</td>' +
-        '</tr>';
-
     var datepicker, plant, comments, timepicker;
 
     var getValuesFromRow = function (thisElement) {
-        // split watering frequency into interval and frequency
-        let freqBeforeSplit = $('#frequency').val();
-        let interval = freqBeforeSplit.split(" ")[1];
-        let frequency = freqBeforeSplit.split(" ")[0];
-        console.log("interval" + interval);
-        console.log("freq" + frequency);
-
-        // get date and time from datepicker and wickedpicker
-        var date = datepicker.val();
-        console.log("date " + date);
-        // var time = ('#timepicker').wickedpicker('time');
-        var time = timepicker.val();
-
-        console.log("time " + time);
-        var startDate = date + ' ' + time;
-        console.log("start date: " + startDate);
-
-        let plantName = plant.val();
-        console.log(plantName);
-
-        $(thisElement).parents("tr").find(".delete").attr("data-plant", plantName);
-
-        let commentsValue = comments.val();
-        console.log(commentsValue);
+  
+        var cells = $(thisElement).parents("tr").find("td");
+        var plantName = cells.eq(0).html();
+        var freqBeforeSplit = cells.eq(1).html();
+        var frequency = freqBeforeSplit.split(" ")[0];
+        var interval = freqBeforeSplit.split(" ")[1];
+        var startDate = cells.eq(2).html() + " " + cells.eq(3).html();
+        var commentsValue = cells.eq(4).html();
+        
 
         return {
             email: email,
@@ -95,7 +71,7 @@ var UIController = (function () {
             comments: commentsValue,
             interval: interval,
             frequency: frequency,
-            start_date: startDate
+            start_date: startDate, 
         }
 
     };
@@ -104,9 +80,29 @@ var UIController = (function () {
     return {
 
         // 1. append new row
-        appendRow: function () {
+        appendRow: function (plantName = "", startDate = "",  comments = "") {
+
+            console.log(plantName);
+            if (startDate) {
+                var date = startDate.split(" ")[0];
+                var time = startDate.split(" ")[1];
+            } else {
+                date = "";
+                time = "";
+            }
+            
+
             $(this).attr("disabled", "disabled"); //disable button
             var index = $("table tbody tr:last-child").index(); // how many rows we have
+            var row = '<tr>' +
+            '<td><input type="text" class="form-control" name="plant" id="plant" value="' + plantName + '"></td>' +
+            '<td>' + dropdown + '</td>' +
+            '<td><input type="text" id="datepicker" value="' + date + '"></td>' +
+            '<td><input type="text" class="timepicker" value="' + time + '"></td>' +
+            '<td><input type="text" class="form-control" name="comments" id="comments" value="' + comments + '"></input></td>' +
+            '<td>' + actions + '</td>' +
+            '</tr>';
+
             $("table").append(row);
             $("table tbody tr").eq(index + 1).find(".add, .edit").toggle(); // hiding edit and showing add for the new row
             $('[data-toggle="tooltip"]').tooltip();
@@ -146,11 +142,17 @@ var UIController = (function () {
             }
             // if no cells are empty execute this code
             if (!empty) {
+                
                 input.each(function () {
                     $(this).parent("td").html($(this).val()); // Set the table cell contents as the contents in the input box
                 });
 
-                return getValuesFromRow(thisElement);
+                $('#frequency').parents("td").html($('#frequency').val());
+                
+
+
+               return getValuesFromRow(thisElement);
+            
             }
         },
 
@@ -159,18 +161,21 @@ var UIController = (function () {
             console.log("inside delete, this element below");
             console.log(thisElement);
 
-            var plant = $(thisElement).parent("a").attr("data-plant"); // NEED TO SEND THIS TO POST REQ
+            // var plant = $(thisElement).parent("a").attr("data-plant"); // NEED TO SEND THIS TO POST REQ
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
-            console.log("delete this plant please" + plant);
-            return plant;
+
+            var plantObject = getValuesFromRow(thisElement);
+            return plantObject;
 
         },
 
 
         // 4. edit row
-        editRow: function () {
-
+        editRow: function (thisElement) {
+            var plantObject = this.deleteRow(thisElement);
+            this.appendRow(plantObject.plant_name, plantObject.start_date, plantObject.comments);
+            return plantObject;
         }
     }
 
@@ -181,7 +186,10 @@ var controller = (function (rqsCtrl, UICtrl) {
     var setupEventListeners = function () {
 
         // 1. Add on click to add new (append) button
-        $(document).on("click", ".add-new", UICtrl.appendRow);
+        $(document).on("click", ".add-new", function(event){
+            UICtrl.appendRow();
+        });
+       
 
         // Add on click to add button
         $(document).on("click", ".add", function (event) {
@@ -191,21 +199,24 @@ var controller = (function (rqsCtrl, UICtrl) {
             rqsCtrl.newPlant(newPlantArgs).then(function () {
                 // Check if post req worked before add to calendar
                 rqsCtrl.addToCalendar(newPlantArgs);
-                $(this).parents("tr").find(".add, .edit").toggle(); // change add button to edit
+                $(thisElement).parents("tr").find(".add, .edit").toggle(); // change add button to edit
                 $(".add-new").removeAttr("disabled"); // enable the add new button again
             });
         });
 
         $(document).on("click", ".delete", function (event) {
             let thisElement = event.target;
-            let plant = UICtrl.deleteRow(thisElement);
-            removePlantArgs = { email: email, plant_name: plant }
+            let plantObject = UICtrl.deleteRow(thisElement);
+            removePlantArgs = { email: email, plant_name: plantObject.plant_name }
             rqsCtrl.removePlant(removePlantArgs);
 
         });
 
-        $(document).on("click", ".edit", function () {
-
+        $(document).on("click", ".edit", function (event) {
+            let thisElement = event.target;
+            let plantObject = UICtrl.editRow(thisElement);
+            removePlantArgs = { email: email, plant_name: plantObject.plant_name }
+            rqsCtrl.removePlant(removePlantArgs);
         });
 
 
