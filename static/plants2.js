@@ -212,8 +212,12 @@ var controller = (function (rqsCtrl, UICtrl) {
             rqsCtrl.newPlant(newPlantArgs).then(function () {
                 // Check if post req worked before add to calendar
                 rqsCtrl.addToCalendar(newPlantArgs).then(function () {
-                    $(thisElement).parents("tr").find(".add, .edit").toggle(); // change add button to edit
+                    // $(thisElement).parents("tr").find(".add, .edit").toggle(); // change add button to edit
                     $(".add-new").removeAttr("disabled"); // enable the add new button again
+                    $(thisElement).parents("tr").find(".spinner-border").hide();
+                    $(thisElement).parents("tr").find(".delete").show();
+                    $(thisElement).parents("tr").find(".add").hide();
+                    $(thisElement).parents("tr").find(".edit").show();
                 });
 
             });
