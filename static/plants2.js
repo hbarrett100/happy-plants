@@ -6,7 +6,7 @@ var requestsController = (function () {
             return $.post("/new_plant", newPlantArgs, function (result) {
                 if (result == 'unique constraint') {
                     $('#homepage-error').html("Plant already exists") // still to be implemented!
-                } // else here to use the json strings returned to populate the table and show to user
+                } 
             });
         },
 
@@ -54,6 +54,7 @@ var UIController = (function () {
 
     var datepicker, plant, comments, timepicker;
 
+    // function which returns values from table row
     var getValuesFromRow = function (thisElement) {
   
         var cells = $(thisElement).parents("tr").find("td");
@@ -82,7 +83,6 @@ var UIController = (function () {
         // 1. append new row
         appendRow: function (plantName = "", startDate = "",  comments = "") {
 
-            console.log(plantName);
             if (startDate) {
                 var date = startDate.split(" ")[0];
                 var time = startDate.split(" ")[1];
@@ -147,10 +147,9 @@ var UIController = (function () {
                     $(this).parent("td").html($(this).val()); // Set the table cell contents as the contents in the input box
                 });
 
+                // set cell content of select dropdown
                 $('#frequency').parents("td").html($('#frequency').val());
                 
-
-
                return getValuesFromRow(thisElement);
             
             }
@@ -158,9 +157,7 @@ var UIController = (function () {
 
         // 3. delete row
         deleteRow: function (thisElement) {
-            console.log("inside delete, this element below");
-            console.log(thisElement);
-
+            
             // var plant = $(thisElement).parent("a").attr("data-plant"); // NEED TO SEND THIS TO POST REQ
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
