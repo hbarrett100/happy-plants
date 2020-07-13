@@ -157,7 +157,7 @@ var UIController = (function () {
 
         // 3. delete row
         deleteRow: function (thisElement) {
-            
+
             // var plant = $(thisElement).parent("a").attr("data-plant"); // NEED TO SEND THIS TO POST REQ
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
@@ -231,3 +231,20 @@ var controller = (function (rqsCtrl, UICtrl) {
 
 
 controller.init();
+
+$(function () {
+    $("form[name='login']").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+        },
+        messages: {
+            email: "Please enter a valid email address"
+        },
+        submitHandler: function (form) {
+            form.submit();
+        }
+    });
+});
