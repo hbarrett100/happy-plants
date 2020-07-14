@@ -5,9 +5,10 @@ var requestsController = (function () {
         newPlant: function (newPlantArgs) {
             return $.post("/new_plant", newPlantArgs, function (result) {
                 if (result == 'unique constraint') {
-                    $('#homepage-error').html("Plant already exists") // still to be implemented!
+                    $('#homepage-error').html("You have already added a plant with this name to your calendar!") // still to be implemented!
                 }
-            });
+
+            })
         },
 
         // 2. add to calendar
@@ -25,7 +26,7 @@ var requestsController = (function () {
 
 var UIController = (function () {
 
-    var actions = `<div class="spinner-border" role="status">
+    var actions = `<div class="spinner-border spinner-border-sm text-warning " role="status">
                         <span class="sr-only" style="height: 30px">Loading...</span>
                     </div>
                 <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
@@ -85,6 +86,8 @@ var UIController = (function () {
 
         // 1. append new row
         appendRow: function (plantName = "", startDate = "", comments = "") {
+
+            $('#homepage-error').html(""); // hide duplicate plant error
 
             if (startDate) {
                 var date = startDate.split(" ")[0];
@@ -210,6 +213,7 @@ var controller = (function (rqsCtrl, UICtrl) {
             console.log(event);
             let newPlantArgs = UICtrl.addRow(thisElement);
             rqsCtrl.newPlant(newPlantArgs).then(function () {
+                $('#homepage-error').html("");
                 // Check if post req worked before add to calendar
                 rqsCtrl.addToCalendar(newPlantArgs).then(function () {
                     // $(thisElement).parents("tr").find(".add, .edit").toggle(); // change add button to edit
@@ -254,6 +258,7 @@ var controller = (function (rqsCtrl, UICtrl) {
 
 controller.init();
 
+// email validation on login page
 $(function () {
     $("form[name='login']").validate({
         rules: {

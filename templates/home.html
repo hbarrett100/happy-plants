@@ -21,7 +21,7 @@
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-8"><h2>Welcome!</b></h2></div>
+                    <div class="col-sm-8"><h2>Welcome!</b></h2><span id="homepage-error"></span></div>
                     <div class="col-sm-4">
                         <button type="button" class="btn btn-default add-new"><i class="fa fa-plus"></i> Add New</button>
                     </div>
@@ -48,7 +48,7 @@
                         <td>{{ plant.time }}</td>
                         <td>{{ plant.comments }}</td>
                         <td>
-                            <div class="spinner-border" role="status">
+                            <div class="spinner-border spinner-border-sm text-warning" role="status">
                                 <span class="sr-only" style="height: 30px">Loading...</span>
                             </div>
 							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
