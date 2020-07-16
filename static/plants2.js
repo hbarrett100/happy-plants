@@ -3,12 +3,7 @@ var requestsController = (function () {
     return {
         // 1. New plant
         newPlant: function (newPlantArgs) {
-            return $.post("/new_plant", newPlantArgs, function (result) {
-                if (result == 'unique constraint') {
-                    $('#homepage-error').html("You have already added a plant with this name to your calendar!") // still to be implemented!
-                }
-
-            })
+            return $.post("/new_plant", newPlantArgs);
         },
 
         // 2. add to calendar
@@ -87,7 +82,7 @@ var UIController = (function () {
         // 1. append new row
         appendRow: function (plantName = "", startDate = "", comments = "") {
 
-            $('#homepage-error').html(""); // hide duplicate plant error
+            
 
             if (startDate) {
                 var date = startDate.split(" ")[0];
@@ -138,6 +133,8 @@ var UIController = (function () {
 
         // 2. add row to table
         addRow: function (thisElement) {
+
+            $('#homepage-error').html(""); // hide duplicate plant error
 
             var empty = false; // flag
             var input = $(thisElement).parents("tr").find('input[type="text"]'); // get input boxes in this row
@@ -192,6 +189,16 @@ var UIController = (function () {
             var plantObject = this.deleteRow(thisElement);
             this.appendRow(plantObject.plant_name, plantObject.start_date, plantObject.comments);
             return plantObject;
+        },
+
+
+        // 5. duplicate plant error
+        duplicatePlant: function (thisElement) {
+            $('#homepage-error').html("You have already added a plant with this name to your calendar!")
+            $(thisElement).parents("tr").remove();
+            $(".add-new").removeAttr("disabled");
+            this.appendRow();
+
         }
     }
 
@@ -210,20 +217,21 @@ var controller = (function (rqsCtrl, UICtrl) {
         // Add on click to add button
         $(document).on("click", ".add", function (event) {
             let thisElement = event.target;
-            console.log(event);
             let newPlantArgs = UICtrl.addRow(thisElement);
-            rqsCtrl.newPlant(newPlantArgs).then(function () {
-                $('#homepage-error').html("");
-                // Check if post req worked before add to calendar
-                rqsCtrl.addToCalendar(newPlantArgs).then(function () {
-                    // $(thisElement).parents("tr").find(".add, .edit").toggle(); // change add button to edit
-                    $(".add-new").removeAttr("disabled"); // enable the add new button again
-                    $(thisElement).parents("tr").find(".spinner-border").hide();
-                    $(thisElement).parents("tr").find(".delete").show();
-                    $(thisElement).parents("tr").find(".add").hide();
-                    $(thisElement).parents("tr").find(".edit").show();
-                });
+            rqsCtrl.newPlant(newPlantArgs).then(function (value) {
 
+                // if plant has already been added to database and calendar, show error to use and do not add
+                if (value === 'unique constraint') {
+                    UICtrl.duplicatePlant(thisElement);
+                } else {
+                    rqsCtrl.addToCalendar(newPlantArgs).then(function () {
+                        $(".add-new").removeAttr("disabled"); // enable the add new button again
+                        $(thisElement).parents("tr").find(".spinner-border").hide();
+                        $(thisElement).parents("tr").find(".delete").show();
+                        $(thisElement).parents("tr").find(".add").hide();
+                        $(thisElement).parents("tr").find(".edit").show();
+                    });
+                }
             });
         });
 
