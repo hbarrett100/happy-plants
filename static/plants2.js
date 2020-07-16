@@ -82,8 +82,6 @@ var UIController = (function () {
         // 1. append new row
         appendRow: function (plantName = "", startDate = "", comments = "") {
 
-            
-
             if (startDate) {
                 var date = startDate.split(" ")[0];
                 var time = startDate.split(" ")[1];
@@ -91,7 +89,6 @@ var UIController = (function () {
                 date = "";
                 time = "";
             }
-
 
             $(this).attr("disabled", "disabled"); //disable button
             var index = $("table tbody tr:last-child").index(); // how many rows we have
@@ -199,6 +196,16 @@ var UIController = (function () {
             $(".add-new").removeAttr("disabled");
             this.appendRow();
 
+        },
+
+
+        // 6. action button toggles
+        toggleActions: function(thisElement) {
+            $(".add-new").removeAttr("disabled"); // enable the add new button again
+            $(thisElement).parents("tr").find(".spinner-border").hide();
+            $(thisElement).parents("tr").find(".delete").show();
+            $(thisElement).parents("tr").find(".add").hide();
+            $(thisElement).parents("tr").find(".edit").show();
         }
     }
 
@@ -225,11 +232,7 @@ var controller = (function (rqsCtrl, UICtrl) {
                     UICtrl.duplicatePlant(thisElement);
                 } else {
                     rqsCtrl.addToCalendar(newPlantArgs).then(function () {
-                        $(".add-new").removeAttr("disabled"); // enable the add new button again
-                        $(thisElement).parents("tr").find(".spinner-border").hide();
-                        $(thisElement).parents("tr").find(".delete").show();
-                        $(thisElement).parents("tr").find(".add").hide();
-                        $(thisElement).parents("tr").find(".edit").show();
+                        UICtrl.toggleActions(thisElement);
                     });
                 }
             });
