@@ -56,6 +56,12 @@ body, html {
 	box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3);
 	overflow: hidden;
 }
+
+.spinner-border {
+	display: none;
+}
+
+
 /* adapted from https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature */ 
 .table-wrapper {
 	width: 850px;
