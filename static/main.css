@@ -95,15 +95,12 @@ body, html {
 }
 table.table {
 	table-layout: fixed;
-	overflow-x: scroll;
 	margin: 0px;
 }
 
 table {
 	/* display: block; */
-	height : 400px;
-	overflow-y : scroll;
-	overflow-x: hidden;
+
 	border: none;
 }
 
@@ -156,6 +153,10 @@ table.table td .add {
     display: table;
 } 
 
+#table-scroll {
+	height: 400px;
+	overflow-y: scroll;
+}
 
 /* date and time pickers */
 #datepicker {

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 
-    <!-- Navigation-->
+<!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container">
 
@@ -16,16 +16,19 @@
 </nav>
 
 <div class="wrapper">
-   <!-- https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature -->
-        <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-8"><h2>Welcome!</b></h2><span id="homepage-error"></span></div>
-                    <div class="col-sm-4">
-                        <button type="button" class="btn btn-primary add-new"><i class="fa fa-plus"></i> Add New</button>
-                    </div>
+    <!-- https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature -->
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h2>Welcome!</b></h2><span id="homepage-error"></span>
+                </div>
+                <div class="col-sm-4">
+                    <button type="button" class="btn btn-primary add-new"><i class="fa fa-plus"></i> Add New</button>
                 </div>
             </div>
+        </div>
+        <div class="m-0 p-0" id="table-scroll">
             <table class="table table-hover">
                 <thead class="thead-light">
                     <tr>
@@ -50,17 +53,20 @@
                             <div class="spinner-border spinner-border-sm text-warning" role="status">
                                 <span class="sr-only" style="height: 30px">Loading...</span>
                             </div>
-							<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                            <a class="delete" title="Delete" data-toggle="tooltip" data-plant="{{ plant.plant }}"><i class="material-icons">&#xE872;</i></a>
+                            <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit" title="Edit" data-toggle="tooltip"><i
+                                    class="material-icons">&#xE254;</i></a>
+                            <a class="delete" title="Delete" data-toggle="tooltip" data-plant="{{ plant.plant }}"><i
+                                    class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
-            </div>
+            </table>
         </div>
+    </div>
 </div>
 
 
-{% endblock %}
 
+{% endblock %}
