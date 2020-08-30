@@ -25,7 +25,6 @@ var UIController = (function () {
                         <span class="sr-only" style="height: 30px">Loading...</span>
                     </div>
                 <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                 <a class="delete" title="Delete" data-toggle="tooltip" data-plant=""><i class="material-icons">&#xE872;</i></a>`;
 
     var dropdown = `<div class="form-group">
@@ -182,15 +181,6 @@ var UIController = (function () {
 
         },
 
-
-        // 4. edit row
-        editRow: function (thisElement) {
-            var plantObject = this.deleteRow(thisElement);
-            this.appendRow(plantObject.plant_name, plantObject.start_date, plantObject.comments);
-            return plantObject;
-        },
-
-
         // 5. duplicate plant error
         duplicatePlant: function (thisElement) {
             $('#homepage-error').html("You have already added a plant with this name to your calendar!")
@@ -255,16 +245,6 @@ var controller = (function (rqsCtrl, UICtrl) {
             rqsCtrl.removePlant(removePlantArgs);
 
         });
-
-        $(document).on("click", ".edit", function (event) {
-            let thisElement = event.target;
-            if( ! thisElement.hasClass("disabled")) {
-                let plantObject = UICtrl.editRow(thisElement);
-                removePlantArgs = { email: email, plant_name: plantObject.plant_name }
-                rqsCtrl.removePlant(removePlantArgs);
-            }
-        });
-
 
     };
 
