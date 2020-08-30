@@ -89,6 +89,8 @@ var UIController = (function () {
                 time = "";
             }
 
+            $('#deleted-message').hide();
+            $('#added-message').hide();
             $(".add-new").attr("disabled", "disabled"); //disable button
             $(".edit").addClass("disabled"); //disable edit button when new row being added
             var index = $("table tbody tr:last-child").index(); // how many rows we have
@@ -131,7 +133,7 @@ var UIController = (function () {
         // 2. add row to table
         addRow: function (thisElement) {
 
-            $('#homepage-error').html(""); // hide duplicate plant error
+            $('#error-message').hide(); // hide duplicate plant error
             $(".edit").removeClass("disabled"); // remove disabled class from edit button 
 
             var empty = false; // flag
@@ -173,6 +175,7 @@ var UIController = (function () {
         deleteRow: function (thisElement) {
 
             // var plant = $(thisElement).parent("a").attr("data-plant"); // NEED TO SEND THIS TO POST REQ
+            $('#added-message').hide();
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
 
@@ -183,7 +186,8 @@ var UIController = (function () {
 
         // 5. duplicate plant error
         duplicatePlant: function (thisElement) {
-            $('#homepage-error').html("You have already added a plant with this name to your calendar!")
+            console.log("inside dup fn");
+            $('#error-message').show();
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
             this.appendRow();
@@ -218,9 +222,7 @@ var controller = (function (rqsCtrl, UICtrl) {
             let thisElement = event.target;
             let newPlantArgs = UICtrl.addRow(thisElement);
 
-            $(".table tr").each(function(i, row){
-                console.log()
-            });
+
 
 
 
@@ -229,9 +231,11 @@ var controller = (function (rqsCtrl, UICtrl) {
 
                 // if plant has already been added to database and calendar, show error to use and do not add
                 if (value === 'unique constraint') {
+                    console.log("error")
                     UICtrl.duplicatePlant(thisElement);
                 } else {
                     rqsCtrl.addToCalendar(newPlantArgs).then(function () {
+                        $('#added-message').show();
                         UICtrl.toggleActions(thisElement);
                     });
                 }
@@ -242,7 +246,9 @@ var controller = (function (rqsCtrl, UICtrl) {
             let thisElement = event.target;
             let plantObject = UICtrl.deleteRow(thisElement);
             removePlantArgs = { email: email, plant_name: plantObject.plant_name }
-            rqsCtrl.removePlant(removePlantArgs);
+            rqsCtrl.removePlant(removePlantArgs).then(function() {
+                $('#deleted-message').show();
+            });
 
         });
 
@@ -253,6 +259,7 @@ var controller = (function (rqsCtrl, UICtrl) {
             console.log('app has started');
             $('[data-toggle="tooltip"]').tooltip();
             setupEventListeners();
+           
         }
     }
 
@@ -275,6 +282,9 @@ $(function () {
         },
         submitHandler: function (form) {
             form.submit();
+            $('#error-message').hide();
+            $('#added-message').hide();
+            $('#deleted-message').hide();
         }
     });
 });

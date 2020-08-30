@@ -83,12 +83,9 @@ body, html {
 .table-title .add-new {
 	float: right;
 	height: 40px;
-	font-weight: bold;
-	font-size: 13px;
-	text-shadow: none;
 	min-width: 100px;
-	border-radius: 50px;
-	line-height: 13px;
+	color: white;
+    background-color: #C38D9E;
 }
 .table-title .add-new i {
 	margin-right: 4px;
@@ -150,10 +147,6 @@ table.table td .add {
 }
 
 
-.table-responsive-ms {
-    display: table;
-} 
-
 #table-scroll {
 	height: 400px;
 	overflow-y: scroll;
@@ -168,9 +161,19 @@ table.table td .add {
 	width: 146px;
 }
 
-.disabled {
-	color: grey !important;
+#error-message {
+	display: none;
 }
+
+#added-message {
+	display: none;
+}
+
+#deleted-message {
+	display: none;
+}
+
+
 
 @media (max-width: 768px) {
 	.landing-text h1{

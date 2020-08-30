@@ -21,10 +21,18 @@
         <div class="table-title">
             <div class="row">
                 <div class="col-sm-8">
-                   <span id="homepage-error"></span>
+                    <div class="alert alert-danger" id="error-message" role="alert">
+                        You have already added this plant to your calendar!
+                      </div>
+                      <div class="alert alert-success" id="added-message" role="alert">
+                        Added to calendar!
+                      </div>
+                      <div class="alert alert-warning" id="deleted-message" role="alert">
+                        Removed from calendar
+                      </div>
                 </div>
                 <div class="col-sm-4">
-                    <button type="button" class="btn btn-primary add-new"><i class="fa fa-plus"></i> Add New</button>
+                    <button type="button" class="btn btn-warning add-new"><i class="fa fa-plus"></i> New Plant</button>
                 </div>
             </div>
         </div>
