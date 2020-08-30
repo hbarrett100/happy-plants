@@ -100,8 +100,9 @@ table.table {
 
 table {
 	/* display: block; */
-
+	overflow-y: scroll;
 	border: none;
+	max-height: 380px;
 }
 
 .table .thead-light th {

@@ -90,7 +90,7 @@ var UIController = (function () {
                 time = "";
             }
 
-            $(this).attr("disabled", "disabled"); //disable button
+            $(".add-new").attr("disabled", "disabled"); //disable button
             var index = $("table tbody tr:last-child").index(); // how many rows we have
             var row = '<tr>' +
                 '<td><input type="text" class="form-control" name="plant" id="plant" value="' + plantName + '"></td>' +
@@ -225,6 +225,14 @@ var controller = (function (rqsCtrl, UICtrl) {
         $(document).on("click", ".add", function (event) {
             let thisElement = event.target;
             let newPlantArgs = UICtrl.addRow(thisElement);
+
+            $(".table tr").each(function(i, row){
+                console.log()
+            });
+
+
+
+
             rqsCtrl.newPlant(newPlantArgs).then(function (value) {
 
                 // if plant has already been added to database and calendar, show error to use and do not add
