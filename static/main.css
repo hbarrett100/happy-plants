@@ -168,6 +168,10 @@ table.table td .add {
 	width: 146px;
 }
 
+.disabled {
+	color: grey !important;
+}
+
 @media (max-width: 768px) {
 	.landing-text h1{
 		font-size: 400%;

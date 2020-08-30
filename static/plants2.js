@@ -91,6 +91,7 @@ var UIController = (function () {
             }
 
             $(".add-new").attr("disabled", "disabled"); //disable button
+            $(".edit").addClass("disabled"); //disable edit button when new row being added
             var index = $("table tbody tr:last-child").index(); // how many rows we have
             var row = '<tr>' +
                 '<td><input type="text" class="form-control" name="plant" id="plant" value="' + plantName + '"></td>' +
@@ -132,6 +133,7 @@ var UIController = (function () {
         addRow: function (thisElement) {
 
             $('#homepage-error').html(""); // hide duplicate plant error
+            $(".edit").removeClass("disabled"); // remove disabled class from edit button 
 
             var empty = false; // flag
             var input = $(thisElement).parents("tr").find('input[type="text"]'); // get input boxes in this row
@@ -256,9 +258,11 @@ var controller = (function (rqsCtrl, UICtrl) {
 
         $(document).on("click", ".edit", function (event) {
             let thisElement = event.target;
-            let plantObject = UICtrl.editRow(thisElement);
-            removePlantArgs = { email: email, plant_name: plantObject.plant_name }
-            rqsCtrl.removePlant(removePlantArgs);
+            if( ! thisElement.hasClass("disabled")) {
+                let plantObject = UICtrl.editRow(thisElement);
+                removePlantArgs = { email: email, plant_name: plantObject.plant_name }
+                rqsCtrl.removePlant(removePlantArgs);
+            }
         });
 
 
