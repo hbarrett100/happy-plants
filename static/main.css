@@ -175,6 +175,10 @@ table.table td .add {
 	display: none;
 }
 
+#delete-btn {
+	display: none;
+}
+
 
 
 @media (max-width: 768px) {

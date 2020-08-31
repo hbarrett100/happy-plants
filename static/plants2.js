@@ -25,7 +25,9 @@ var UIController = (function () {
                         <span class="sr-only" style="height: 30px">Loading...</span>
                     </div>
                 <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                <a class="delete" title="Delete" data-toggle="tooltip" data-plant=""><i class="material-icons">&#xE872;</i></a>`;
+                <a class="delete" id="delete-btn" title="Delete" data-toggle="tooltip" data-plant=""><i class="material-icons">&#xE872;</i></a>
+                <a class="cancel" id="cancel-btn" title="Cancel" data-toggle="tooltip"><i
+                class="material-icons">cancel</i></a>`;
 
     var dropdown = `<div class="form-group">
                     <select class="form-control" id="frequency">
@@ -92,7 +94,6 @@ var UIController = (function () {
             $('#deleted-message').hide();
             $('#added-message').hide();
             $(".add-new").attr("disabled", "disabled"); //disable button
-            $(".edit").addClass("disabled"); //disable edit button when new row being added
             var index = $("table tbody tr:last-child").index(); // how many rows we have
             var row = '<tr>' +
                 '<td><input type="text" class="form-control" name="plant" id="plant" value="' + plantName + '"></td>' +
@@ -134,11 +135,10 @@ var UIController = (function () {
         addRow: function (thisElement) {
 
             $('#error-message').hide(); // hide duplicate plant error
-            $(".edit").removeClass("disabled"); // remove disabled class from edit button 
 
             var empty = false; // flag
             var input = $(thisElement).parents("tr").find('input[type="text"]'); // get input boxes in this row
-            console.log(thisElement);
+
             // for loop
             input.each(function () {
                 if (!$(this).val()) {
@@ -162,9 +162,9 @@ var UIController = (function () {
                 // set cell content of select dropdown
                 $('#frequency').parents("td").html($('#frequency').val());
                 $(thisElement).parents("tr").find(".spinner-border").show();
-                $(thisElement).parents("tr").find(".edit").hide();
                 $(thisElement).parents("tr").find(".delete").hide();
                 $(thisElement).parents("tr").find(".add").hide();
+                $(thisElement).parents("tr").find(".cancel").hide();
 
                 return getValuesFromRow(thisElement);
 
@@ -201,7 +201,8 @@ var UIController = (function () {
             $(thisElement).parents("tr").find(".spinner-border").hide();
             $(thisElement).parents("tr").find(".delete").show();
             $(thisElement).parents("tr").find(".add").hide();
-            $(thisElement).parents("tr").find(".edit").show();
+            $(thisElement).parents("tr").find(".cancel").hide();
+
         }
     }
 
@@ -249,6 +250,12 @@ var controller = (function (rqsCtrl, UICtrl) {
             rqsCtrl.removePlant(removePlantArgs).then(function() {
                 $('#deleted-message').show();
             });
+
+        });
+
+        $(document).on("click", ".cancel", function (event) {
+            let thisElement = event.target;
+            UICtrl.deleteRow(thisElement);
 
         });
 
