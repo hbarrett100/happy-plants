@@ -101,7 +101,7 @@ var UIController = (function () {
                 '<td><input type="text" id="datepicker" value="' + date + '"></td>' +
                 '<td><input type="text" class="timepicker" id="timepicker" value="' + time + '"></td>' +
                 '<td><input type="text" class="form-control" name="comments" id="comments" value="' + comments + '"></input></td>' +
-                '<td>' + actions + '</td>' +
+                '<td id="action-buttons">' + actions + '</td>' +
                 '</tr>';
 
             $("table").append(row);

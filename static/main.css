@@ -28,8 +28,8 @@ body, html {
 }
 
 .btn-default {
-	color:#686868;
-	background-color:#c8a2c8;
+	color:white;
+	background-color:#BB8644;
 	margin-top: 40px;
 	}
 
@@ -68,15 +68,14 @@ body, html {
 
 /* adapted from https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=table-with-add-and-delete-row-feature */ 
 .table-wrapper {
-	width: 96%;
-	margin: 20px 20px 0px 20px;
+	width: 98%;
+	margin: 10px 10px 0px 10px;
 	background: #fff;
 	padding: 0px;	
 	box-shadow: 0 1px 1px rgba(0,0,0,.05);
 }
 .table-title {
 	padding-bottom: 10px;
-	margin: 0 0 10px;
 }
 
 
@@ -89,7 +88,7 @@ body, html {
 	height: 40px;
 	min-width: 100px;
 	color: white;
-	background-color:#c8a2c8;
+	background-color:#BB8644;
 	border: none;
 }
 
@@ -106,7 +105,7 @@ table {
 
 .table .thead-light th {
 	font-size: 16px;
-	text-align: center;
+	text-align: left;
 }
 
 table.table tr th, table.table tr td {
@@ -154,6 +153,9 @@ table.table td .add {
 	overflow-y: scroll;
 }
 
+#action-buttons {
+	width: 100px;
+}
 /* date and time pickers */
 #datepicker {
 	width: 146px;
