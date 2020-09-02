@@ -17,7 +17,7 @@ var requestsController = (function () {
             return $.post("/remove_plant", removePlantArgs);
         },
     }
-})();
+})();``
 
 var UIController = (function () {
 
@@ -25,10 +25,11 @@ var UIController = (function () {
                         <span class="sr-only" style="height: 30px">Loading...</span>
                     </div>
                 <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                <a class="delete" id="delete-btn" title="Delete" data-toggle="tooltip" data-plant=""><i class="material-icons">&#xE872;</i></a>
-                <a class="cancel" id="cancel-btn" title="Cancel" data-toggle="tooltip"><i
+                <a class="delete" title="Delete" data-toggle="tooltip" data-plant=""><i class="material-icons">&#xE872;</i></a>
+                <a class="cancel" title="Cancel" data-toggle="tooltip"><i
                 class="material-icons">cancel</i></a>`;
 
+        
     var dropdown = `<div class="form-group">
                     <select class="form-control" id="frequency">
                     <option>1 day</option>
@@ -91,6 +92,7 @@ var UIController = (function () {
                 time = "";
             }
 
+        
             $('#deleted-message').hide();
             $('#added-message').hide();
             $(".add-new").attr("disabled", "disabled"); //disable button
@@ -105,7 +107,13 @@ var UIController = (function () {
                 '</tr>';
 
             $("table").append(row);
-            $("table tbody tr").eq(index + 1).find(".add, .edit").toggle(); // hiding edit and showing add for the new row
+            // $('.delete').hide();
+            // $('.cancel').show();
+            // $('.add').show();
+            $("table tbody tr").eq(index + 1).find('.add').show();
+            $("table tbody tr").eq(index + 1).find('.cancel').show();
+            $("table tbody tr").eq(index + 1).find('.delete').hide();
+            // $("table tbody tr").eq(index + 1).find(".add, .edit").toggle(); // hiding edit and showing add for the new row
             $('[data-toggle="tooltip"]').tooltip();
 
             // flatpickr date https://flatpickr.js.org/options/
@@ -162,7 +170,6 @@ var UIController = (function () {
                 // set cell content of select dropdown
                 $('#frequency').parents("td").html($('#frequency').val());
                 $(thisElement).parents("tr").find(".spinner-border").show();
-                $(thisElement).parents("tr").find(".delete").hide();
                 $(thisElement).parents("tr").find(".add").hide();
                 $(thisElement).parents("tr").find(".cancel").hide();
 
@@ -186,7 +193,6 @@ var UIController = (function () {
 
         // 5. duplicate plant error
         duplicatePlant: function (thisElement) {
-            console.log("inside dup fn");
             $('#error-message').show();
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
@@ -200,9 +206,6 @@ var UIController = (function () {
             $(".add-new").removeAttr("disabled"); // enable the add new button again
             $(thisElement).parents("tr").find(".spinner-border").hide();
             $(thisElement).parents("tr").find(".delete").show();
-            $(thisElement).parents("tr").find(".add").hide();
-            $(thisElement).parents("tr").find(".cancel").hide();
-
         }
     }
 
@@ -223,16 +226,10 @@ var controller = (function (rqsCtrl, UICtrl) {
             let thisElement = event.target;
             let newPlantArgs = UICtrl.addRow(thisElement);
 
-
-
-
-
-
             rqsCtrl.newPlant(newPlantArgs).then(function (value) {
 
                 // if plant has already been added to database and calendar, show error to use and do not add
                 if (value === 'unique constraint') {
-                    console.log("error")
                     UICtrl.duplicatePlant(thisElement);
                 } else {
                     rqsCtrl.addToCalendar(newPlantArgs).then(function () {
@@ -263,7 +260,6 @@ var controller = (function (rqsCtrl, UICtrl) {
 
     return {
         init: function () {
-            console.log('app has started');
             $('[data-toggle="tooltip"]').tooltip();
             setupEventListeners();
            

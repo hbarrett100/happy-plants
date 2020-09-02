@@ -186,7 +186,7 @@ table.table td .add {
 	display: none;
 }
 
-#delete-btn {
+table.table td .cancel {
 	display: none;
 }
 
