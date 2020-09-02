@@ -103,9 +103,18 @@ table {
 	max-height: 380px;
 }
 
-.table .thead-light th {
+thead{
+	background-color: 	#F0F0F0;
+}
+
+/* thead th {
+	position: sticky;
+} */
+
+.table th {
 	font-size: 16px;
 	text-align: left;
+	font-weight: 400;
 }
 
 table.table tr th, table.table tr td {
