@@ -21,7 +21,7 @@ var requestsController = (function () {
 
 var UIController = (function () {
 
-    var actions = `<div class="spinner-border spinner-border-sm text-warning " role="status">
+    var actions = `<div class="spinner-grow text-secondary spinner-grow-sm" role="status">
                         <span class="sr-only" style="height: 30px">Loading...</span>
                     </div>
                 <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
@@ -142,6 +142,8 @@ var UIController = (function () {
         // 2. add row to table
         addRow: function (thisElement) {
 
+            $('#deleted-message').hide();
+            $('#added-message').hide();
             $('#error-message').hide(); // hide duplicate plant error
 
             var empty = false; // flag
@@ -169,7 +171,7 @@ var UIController = (function () {
 
                 // set cell content of select dropdown
                 $('#frequency').parents("td").html($('#frequency').val());
-                $(thisElement).parents("tr").find(".spinner-border").show();
+                $(thisElement).parents("tr").find(".spinner-grow").show();
                 $(thisElement).parents("tr").find(".add").hide();
                 $(thisElement).parents("tr").find(".cancel").hide();
 
@@ -205,7 +207,7 @@ var UIController = (function () {
         // 6. action button toggles
         toggleActions: function(thisElement) {
             $(".add-new").removeAttr("disabled"); // enable the add new button again
-            $(thisElement).parents("tr").find(".spinner-border").hide();
+            $(thisElement).parents("tr").find(".spinner-grow").hide();
             $(thisElement).parents("tr").find(".delete").show();
         }
     }
