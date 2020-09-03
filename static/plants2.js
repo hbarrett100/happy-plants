@@ -181,8 +181,9 @@ var UIController = (function () {
         // 3. delete row
         deleteRow: function (thisElement) {
 
-            // var plant = $(thisElement).parent("a").attr("data-plant"); // NEED TO SEND THIS TO POST REQ
+            // hide alerts
             $('#added-message').hide();
+            $('#error-message').hide();
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
 

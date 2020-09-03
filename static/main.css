@@ -90,6 +90,8 @@ body, html {
 	color: white;
 	background-color:#BB8644;
 	border: none;
+	margin-bottom: 6px;
+	margin-top: 6px;
 }
 
 table.table {
@@ -183,6 +185,12 @@ table.table td .add {
 
 #timepicker {
 	width: 146px;
+}
+
+.alert {
+	text-align: center;
+	margin-bottom: 0px;
+	p
 }
 
 #error-message {
