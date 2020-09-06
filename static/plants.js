@@ -17,7 +17,7 @@ var requestsController = (function () {
             return $.post("/remove_plant", removePlantArgs);
         },
     }
-})();``
+})(); ``
 
 var UIController = (function () {
 
@@ -29,7 +29,7 @@ var UIController = (function () {
                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
                 class="material-icons">cancel</i></a>`;
 
-        
+
     var dropdown = `<div class="form-group">
                     <select class="form-control" id="frequency">
                     <option>1 day</option>
@@ -202,7 +202,7 @@ var UIController = (function () {
         },
 
         // 6. action button toggles
-        toggleActions: function(thisElement) {
+        toggleActions: function (thisElement) {
             $(".add-new").removeAttr("disabled"); // enable the add new button again
             $(thisElement).parents("tr").find(".spinner-grow").hide();
             $(thisElement).parents("tr").find(".delete").show();
@@ -244,11 +244,11 @@ var controller = (function (rqsCtrl, UICtrl) {
             let thisElement = event.target;
             let plantObject = UICtrl.deleteRow(thisElement);
             removePlantArgs = { email: email, plant_name: plantObject.plant_name }
-            rqsCtrl.removePlant(removePlantArgs).then(function() {
-                if ($('#plant-table >tbody >tr').length != 0){
+            rqsCtrl.removePlant(removePlantArgs).then(function () {
+                if ($('#plant-table >tbody >tr').length != 0) {
                     $('#deleted-message').show();
                 };
-               
+
             });
 
         });
@@ -265,6 +265,15 @@ var controller = (function (rqsCtrl, UICtrl) {
         init: function () {
             $('[data-toggle="tooltip"]').tooltip();
             setupEventListeners();
+            $(document).ready(function () {
+                console.log("ready")
+                var rowCount = $('#plant-table >tbody >tr').length;
+                if (rowCount == 0) {
+                    $('#empty-table').show();
+    
+                }
+
+            });
                
         }
     }
