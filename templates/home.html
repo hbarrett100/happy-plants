@@ -29,6 +29,9 @@
                       <div class="alert alert-warning" id="deleted-message" role="alert">
                         Removed from calendar
                       </div>
+                      <div class="alert alert-warning" id="empty-table" role="alert">
+                        You have no reminders in your calendar. Click 'New Plant' to add one.
+                      </div>
                 </div>
                 <div class="col-sm-6">
                     <button type="button" class="btn btn-warning add-new"><i class="fa fa-plus"></i> New Plant</button>
@@ -36,7 +39,7 @@
             </div>
         </div>
         <div class="m-0 p-0" id="table-scroll">
-            <table class="table">
+            <table class="table" id="plant-table">
                 <thead>
                     <tr>
                         <th>PLANT</th>

@@ -190,7 +190,6 @@ table.table td .add {
 .alert {
 	text-align: center;
 	margin-bottom: 0px;
-	p
 }
 
 #error-message {
@@ -202,6 +201,10 @@ table.table td .add {
 }
 
 #deleted-message {
+	display: none;
+}
+
+#empty-table {
 	display: none;
 }
 

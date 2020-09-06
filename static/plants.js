@@ -75,9 +75,7 @@ var UIController = (function () {
             frequency: frequency,
             start_date: startDate,
         }
-
     };
-
 
     return {
 
@@ -92,7 +90,7 @@ var UIController = (function () {
                 time = "";
             }
 
-        
+            $('#empty-table').hide();
             $('#deleted-message').hide();
             $('#added-message').hide();
             $(".add-new").attr("disabled", "disabled"); //disable button
@@ -107,13 +105,9 @@ var UIController = (function () {
                 '</tr>';
 
             $("table").append(row);
-            // $('.delete').hide();
-            // $('.cancel').show();
-            // $('.add').show();
             $("table tbody tr").eq(index + 1).find('.add').show();
             $("table tbody tr").eq(index + 1).find('.cancel').show();
             $("table tbody tr").eq(index + 1).find('.delete').hide();
-            // $("table tbody tr").eq(index + 1).find(".add, .edit").toggle(); // hiding edit and showing add for the new row
             $('[data-toggle="tooltip"]').tooltip();
 
             // flatpickr date https://flatpickr.js.org/options/
@@ -188,6 +182,11 @@ var UIController = (function () {
             $('#error-message').hide();
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
+            var rowCount = $('#plant-table >tbody >tr').length;
+            if (rowCount == 0) {
+                $('#empty-table').show();
+
+            }
 
             var plantObject = getValuesFromRow(thisElement);
             return plantObject;
@@ -200,9 +199,7 @@ var UIController = (function () {
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
             this.appendRow();
-
         },
-
 
         // 6. action button toggles
         toggleActions: function(thisElement) {
@@ -248,7 +245,10 @@ var controller = (function (rqsCtrl, UICtrl) {
             let plantObject = UICtrl.deleteRow(thisElement);
             removePlantArgs = { email: email, plant_name: plantObject.plant_name }
             rqsCtrl.removePlant(removePlantArgs).then(function() {
-                $('#deleted-message').show();
+                if ($('#plant-table >tbody >tr').length != 0){
+                    $('#deleted-message').show();
+                };
+               
             });
 
         });
@@ -265,7 +265,7 @@ var controller = (function (rqsCtrl, UICtrl) {
         init: function () {
             $('[data-toggle="tooltip"]').tooltip();
             setupEventListeners();
-           
+               
         }
     }
 
@@ -288,9 +288,7 @@ $(function () {
         },
         submitHandler: function (form) {
             form.submit();
-            $('#error-message').hide();
-            $('#added-message').hide();
-            $('#deleted-message').hide();
+            console.log("form submitted")
         }
     });
 });
