@@ -14,7 +14,7 @@ body, html {
 }
 
 .landing-text {
-	z-index: 1000;
+	z-index: 10;
     position: absolute;
 	display: table-cell;
 	text-align: center;
@@ -200,6 +200,9 @@ table.table td .cancel {
 	display: none;
 }
 
+#modal-btn {
+	color: white;
+}
 @media (max-width: 768px) {
 	.landing-text h1{
 		font-size: 400%;
