@@ -196,6 +196,10 @@ table.table td .add {
 	display: none;
 }
 
+#empty-table {
+	display: none;
+}
+
 table.table td .cancel {
 	display: none;
 }
