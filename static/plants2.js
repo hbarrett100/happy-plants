@@ -24,9 +24,9 @@ var UIController = (function () {
     var actions = `<div class="spinner-grow text-secondary spinner-grow-sm" role="status">
                         <span class="sr-only" style="height: 30px">Loading...</span>
                     </div>
-                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                <a class="delete" title="Delete" data-toggle="tooltip" data-plant=""><i class="material-icons">&#xE872;</i></a>
-                <a class="cancel" title="Cancel" data-toggle="tooltip"><i
+                <a class="add action" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                <a class="delete action" title="Delete" data-toggle="tooltip" data-plant=""><i class="material-icons">&#xE872;</i></a>
+                <a class="cancel action" title="Cancel" data-toggle="tooltip"><i
                 class="material-icons">cancel</i></a>`;
 
         

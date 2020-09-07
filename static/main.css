@@ -78,7 +78,6 @@ body, html {
 	padding-bottom: 10px;
 }
 
-
 .table-title h2 {
 	margin: 6px 0 0;
 	font-size: 22px;
@@ -105,12 +104,8 @@ table {
 	max-height: 380px;
 }
 
-tbody {
+/* tbody {
 	overflow-y: scroll;
-}
-
-/* thead{
-	background-color: 	#F0F0F0;
 } */
 
 thead th {
@@ -130,9 +125,6 @@ thead th {
 	font-weight: 400;
 }
 
-/* table.table tr th, table.table tr td {
-	border-color: #e9e9e9;
-} */
 table.table th i {
 	font-size: 20px;
 	margin: 0 5px;
@@ -190,7 +182,6 @@ table.table td .add {
 .alert {
 	text-align: center;
 	margin-bottom: 0px;
-	p
 }
 
 #error-message {
@@ -213,4 +204,90 @@ table.table td .cancel {
 	.landing-text h1{
 		font-size: 400%;
 	}
+}
+
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	.wrapper {
+		width: 100%;
+		height: calc(100vh - 88px);
+		bottom: 0px;
+		left: 0;
+		transform: translate(0);
+		top: 88px;
+	}
+ #table-scroll { 
+		height: 100%;
+		overflow-y: hidden;
+	} 
+
+	table {
+		max-height: none;
+		height: calc(100vh - 180px);
+	}
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+
+
+	td:nth-of-type(6) {
+		display: table;
+		height: 48px;
+	}
+
+	.delete {
+		padding-left: 20px;
+		padding-top: 13px;
+	} 
+
+	.add {
+		padding-left: 20px;
+		padding-top: 13px;
+	}
+
+	.cancel {
+		padding-top: 13px;
+	}
+	
+	/* Hide table headers */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50% !important; 
+	}
+	
+	/* behave like table headers */
+	td:before { 
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+		font-weight: 500;
+		padding-top: 5px;
+		padding-left: 5px;
+	}
+	
+	/* label the headers */
+	td:nth-of-type(1):before { content: "Plant"; }
+	td:nth-of-type(2):before { content: "Water frequency"; }
+	td:nth-of-type(3):before { content: "Start Date"; }
+	td:nth-of-type(4):before { content: "Reminder Time"; }
+	td:nth-of-type(5):before { content: "Comments"; }
+
+
 }
