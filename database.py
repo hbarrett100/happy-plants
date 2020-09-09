@@ -40,9 +40,10 @@ class Plant(Base):
    def to_json(self):
       return json.dumps(self.to_dict())
 
-      #add repr that returns json
 
 #creates a create_engine instance at the bottom of the file
 if __name__ == "__main__":
-   engine = create_engine('sqlite:///plants.db', echo=True)
+   DATABASE_URI = 'postgres+psycopg2://postgres:password@localhost:5432/plants'
+
+   engine = create_engine(DATABASE_URI, echo=True)
    Base.metadata.create_all(engine)
