@@ -2,6 +2,8 @@ import sys
 import json
 #for creating the mapper code
 from sqlalchemy import Column, Integer, String, DateTime
+import os
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 #for configuration and class code
 from sqlalchemy.ext.declarative import declarative_base
@@ -43,7 +45,12 @@ class Plant(Base):
 
 #creates a create_engine instance at the bottom of the file
 if __name__ == "__main__":
-   DATABASE_URI = 'postgres+psycopg2://postgres:password@localhost:5432/plants'
+   # DATABASE_URI = 'postgres+psycopg2://postgres:password@localhost:5432/plants'
+
+
+   SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+   DATABASE_URI = f'postgres+psycopg2://{SQLALCHEMY_DATABASE_URI}/plants'
+
 
    engine = create_engine(DATABASE_URI, echo=True)
    Base.metadata.create_all(engine)

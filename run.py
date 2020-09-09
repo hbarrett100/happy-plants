@@ -12,10 +12,11 @@ from google.auth.transport.requests import Request
 import events
 
 #Connect to Database and create database session
-engine = create_engine(
-                'sqlite:///plants.db',
-                connect_args={'check_same_thread': False}
-                )
+# DATABASE_URI = 'postgres+psycopg2://postgres:password@localhost:5432/plants'
+
+SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+DATABASE_URI = f'postgres+psycopg2://{SQLALCHEMY_DATABASE_URI}/plants'
+engine = create_engine(DATABASE_URI)
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
