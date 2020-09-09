@@ -1,11 +1,81 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>hoem page!</h1>
-<p id="homepage-error">test</p>
-<p id="calendar-test">cal test</p>
-<button id='newplant'>Add new plant</button>
-<button id='calendar'>Add to calendar</button>
-<button id='delete'>delete plant</button>
-<button id='edit'>edit plant</button>
+
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3">
+    <div class="container">
+        <a class="navbar-brand" href="">Happy Plants</a>
+        
+            <ul class="navbar-nav ml-auto my-2">
+                <li class="nav-item"><a class="nav-link" href="/login">Logout</a></li>
+
+            </ul>
+       
+    </div>
+</nav>
+
+<div class="wrapper">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="alert alert-danger" id="error-message" role="alert">
+                        You have already added this plant to your calendar!
+                      </div>
+                      <div class="alert alert-warning" id="added-message" role="alert">
+                        Added to calendar!
+                      </div>
+                      <div class="alert alert-warning" id="deleted-message" role="alert">
+                        Removed from calendar
+                      </div>
+                      <div class="alert alert-warning" id="empty-table" role="alert">
+                        You have no plants saved. Click 'New Plant'.
+                      </div>
+                </div>
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-warning add-new"><i class="fa fa-plus"></i> New Plant</button>
+                </div>
+            </div>
+        </div>
+        <div class="m-0 p-0" id="table-scroll">
+            <table class="table" id="plant-table">
+                <thead>
+                    <tr>
+                        <th>PLANT</th>
+                        <th>WATER FREQ.</th>
+                        <th>START</th>
+                        <th>REMINDER TIME</th>
+                        <th>COMMENTS</th>
+                        <th id="action-buttons"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- loop through users plants to display in table -->
+                    {% for plant in user_plants_info %}
+                    <tr>
+                        <td>{{ plant.plant }}</td>
+                        <td>{{ plant.frequency }}</td>
+                        <td>{{ plant.date }}</td>
+                        <td>{{ plant.time }}</td>
+                        <td>{{ plant.comments }}</td>
+                        <td>
+                            <div class="spinner-grow text-secondary spinner-grow-sm" role="status">
+                                <span class="sr-only" style="height: 30px">Loading...</span>
+                            </div>
+                            <a class="add action" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="delete action" title="Delete" data-toggle="tooltip" data-plant="{{ plant.plant }}"><i
+                                    class="material-icons">&#xE872;</i></a>
+                            <a class="cancel action" title="Cancel" data-toggle="tooltip"><i
+                                    class="material-icons">cancel</i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
 
 {% endblock %}
