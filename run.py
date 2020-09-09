@@ -10,6 +10,8 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import events
+import os
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 #Connect to Database and create database session
 # DATABASE_URI = 'postgres+psycopg2://postgres:password@localhost:5432/plants'
