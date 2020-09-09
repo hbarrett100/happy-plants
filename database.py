@@ -49,8 +49,8 @@ if __name__ == "__main__":
 
 
    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
-   DATABASE_URI = f'postgres+psycopg2://{SQLALCHEMY_DATABASE_URI}/plants'
+   # DATABASE_URI = f'postgres+psycopg2://{SQLALCHEMY_DATABASE_URI}/plants'
 
 
-   engine = create_engine(DATABASE_URI, echo=True)
+   engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
    Base.metadata.create_all(engine)
