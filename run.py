@@ -23,7 +23,7 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-
+session.rollback()
 
 #login page
 @app.route('/')
