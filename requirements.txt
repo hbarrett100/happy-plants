@@ -1,0 +1,10 @@
+json
+flask
+sqlalchemy
+database
+datetime
+googleapiclient.discovery
+google_auth_oauthlib.flow
+google.auth.transport.requests
+os.path
+pickle
