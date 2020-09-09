@@ -33,10 +33,7 @@ def login():
 @app.route("/home")
 def home():
     user_email = request.args.get('email')
-
-    # what if url typed in by hand with invalid email - in database? valid email?
     all_plants = session.query(Plant).filter_by(email = user_email).all()
-    
     user_plants_info = []
     #plant is an instance of plant object
     for plant in all_plants:
@@ -62,18 +59,11 @@ def new_plant():
         if existing_user_plant:
             return 'unique constraint'
         else:
-            print("making ",request.form.get("plant_name"))
             new_plant = Plant(email=user_email, plant=request.form.get("plant_name"), comments=request.form.get("comments"),
                     interval=request.form.get("interval"), frequency=request.form.get("frequency"), date=datetime_object)
-
-            print("adding ",request.form.get("plant_name"))
             session.add(new_plant)
-
-        
-            print("committing ",request.form.get("plant_name"))
             session.commit()
        
-
             # session.query returns an array of plants
             all_plants = session.query(Plant).filter_by(email = user_email).all()
 
@@ -81,12 +71,8 @@ def new_plant():
             user_plants_info = []
             for plant in all_plants:
                 user_plants_info.append(plant.to_json())
-            print("returning", user_plants_info)
             return json.dumps(user_plants_info) 
         
-
-
-
 # route: add event to google calendar
 @app.route('/add_to_calendar', methods=['GET', 'POST'])
 def add_to_calendar():
@@ -99,7 +85,6 @@ def add_to_calendar():
 
         # split datetime for google calendar format
         date, time = request.form.get("start_date").split(' ')
-        print(request.form.get("start_date"))
         start_date = date[6:10] + date[2:6] + date[:2]
 
         #set until for recurrence rule
@@ -137,18 +122,13 @@ def add_to_calendar():
             ],
         },
         }
-        print(event["recurrence"])
         service = events.get_calendar()
         recurring_event = service.events().insert(calendarId='primary',sendNotifications=True, body=event).execute()
 
         #add event id to database. recurring_event is event object with attribute called id
         added_plant = session.query(Plant).filter_by(email=request.form.get('email'), plant=request.form.get("plant_name")).first()
-        print(added_plant.to_json())
         setattr(added_plant, 'id', recurring_event.get('id'))
         session.commit()
-
-        # print(recurring_event.get('id'))
-        # print( 'Event created: %s' % (recurring_event.get('htmlLink')))
         return 'true'
 
 
@@ -159,59 +139,14 @@ def remove_plant():
         #remove event from calendar
         user_email = request.form.get("email")
         plant_name = request.form.get("plant_name")
-        print(user_email, plant_name)
         plant_to_delete = session.query(Plant).filter_by(email=user_email, plant=plant_name).first()
-
         event_id = plant_to_delete.id
-        print(event_id)
- 
         updated_instance = events.get_calendar().events().delete(calendarId='primary', eventId=event_id, sendUpdates='all').execute()
-
-
-
-        print('event removed from cal')
 
         #remove plant from database
         session.delete(plant_to_delete)
         session.commit()
-        print('event removed from db')
         return 'true'
-
-
-# edit entry in db and edit event
-
-#when table is made, use jquery to save old input value before the onchange to new value
-# use old value to find in database, and new value to check for unique constraint!
-
-# @app.route('/edit_plant', methods=['GET', 'POST'])
-# def edit_plant():
-#     if request.method == 'POST':
-#     #change format of date
-#         date = request.form.get("start_date")
-#         datetime_object = datetime.strptime(date, '%d-%m-%Y %H:%M:%S')
-
-#         # get user email
-#         user_email = request.form.get('email')
-#         # get the plant to be edited
-#         edited_plant = session.query(Plant).filter_by(email=user_email, plant=request.form.get("plant_name")).first()
-
-#         edited_plant.plant = request.form.get("plant_name")
-#         edited_plant.comments = request.form.get("comments")
-#         edited_plant.interval = request.form.get("interval")
-#         edited_plant.frequency = request.form.get("frequency")
-#         edited_plant.date = datetime_object
-
-#         existing_user_plant = session.query(Plant).filter_by(email=user_email, plant=request.form.get("plant_name")).first()
-
-#     #return error if the update is a plant that already exists in the database
-
-#         if existing_user_plant:
-#             return 'unique constraint'
-#         else:
-#             print("editing ",request.form.get("plant_name"))
-#             session.add(edited_plant)
-#             session.commit()
-
 
 if __name__ == '__main__':
     app.run(debug=True)

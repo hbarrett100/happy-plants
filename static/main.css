@@ -2,7 +2,6 @@ body, html {
 	height: 100%;
   }
   
-
 #bg-img {
 	background: url(plantbg2.jpg) no-repeat center center fixed;
 	display: table;
@@ -104,10 +103,6 @@ table {
 	max-height: 380px;
 }
 
-/* tbody {
-	overflow-y: scroll;
-} */
-
 thead th {
 	position: sticky;
 	top: 0; 
@@ -152,7 +147,6 @@ table.table .form-control {
 	height: 32px;
 	line-height: 32px;
 	box-shadow: none;
-	/* border-radius: 2px; */
 }
 table.table .form-control.error {
 	border-color: #f50000;
@@ -160,7 +154,6 @@ table.table .form-control.error {
 table.table td .add {
 	display: none;
 }
-
 
 #table-scroll {
 	height: 400px;
@@ -207,12 +200,15 @@ table.table td .cancel {
 #modal-btn {
 	color: white;
 }
+
+/* media queries */
 @media (max-width: 768px) {
 	.landing-text h1{
 		font-size: 400%;
 	}
 }
 
+/* to make table responsive */
 @media 
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
@@ -260,7 +256,7 @@ only screen and (max-width: 760px),
 		padding-top: 13px;
 	}
 	
-	/* Hide table headers */
+	/* hide table headers */
 	thead tr { 
 		position: absolute;
 		top: -9999px;
@@ -275,8 +271,7 @@ only screen and (max-width: 760px),
 		position: relative;
 		padding-left: 50% !important; 
 	}
-	
-	/* behave like table headers */
+
 	td:before { 
 		position: absolute;
 		top: 6px;

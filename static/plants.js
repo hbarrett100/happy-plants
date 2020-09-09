@@ -90,6 +90,7 @@ var UIController = (function () {
                 time = "";
             }
 
+            // hide messages
             $('#empty-table').hide();
             $('#deleted-message').hide();
             $('#added-message').hide();
@@ -104,7 +105,10 @@ var UIController = (function () {
                 '<td id="action-buttons">' + actions + '</td>' +
                 '</tr>';
 
+            // add new row
             $("table").append(row);
+
+            // show/hide appropriate action buttons
             $("table tbody tr").eq(index + 1).find('.add').show();
             $("table tbody tr").eq(index + 1).find('.cancel').show();
             $("table tbody tr").eq(index + 1).find('.delete').hide();
@@ -182,12 +186,14 @@ var UIController = (function () {
             $('#error-message').hide();
             $(thisElement).parents("tr").remove();
             $(".add-new").removeAttr("disabled");
+            // show empty table message when last row is deleted
             var rowCount = $('#plant-table >tbody >tr').length;
             if (rowCount == 0) {
                 $('#empty-table').show();
 
             }
 
+            // extract values from row
             var plantObject = getValuesFromRow(thisElement);
             return plantObject;
 
@@ -240,10 +246,12 @@ var controller = (function (rqsCtrl, UICtrl) {
             });
         });
 
+        // add on-click to delete button
         $(document).on("click", ".delete", function (event) {
             let thisElement = event.target;
-            let plantObject = UICtrl.deleteRow(thisElement);
+            let plantObject = UICtrl.deleteRow(thisElement); // delete from UI
             removePlantArgs = { email: email, plant_name: plantObject.plant_name }
+            // remove from calendar and database
             rqsCtrl.removePlant(removePlantArgs).then(function () {
                 if ($('#plant-table >tbody >tr').length != 0) {
                     $('#deleted-message').show();
@@ -253,6 +261,7 @@ var controller = (function (rqsCtrl, UICtrl) {
 
         });
 
+        // cancel adding new plant and remove row from table
         $(document).on("click", ".cancel", function (event) {
             let thisElement = event.target;
             UICtrl.deleteRow(thisElement);
@@ -267,6 +276,7 @@ var controller = (function (rqsCtrl, UICtrl) {
             setupEventListeners();
             $(document).ready(function () {
                 console.log("ready")
+                // display message to user if no plants saved yet
                 var rowCount = $('#plant-table >tbody >tr').length;
                 if (rowCount == 0) {
                     $('#empty-table').show();
