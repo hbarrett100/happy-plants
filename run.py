@@ -17,7 +17,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # DATABASE_URI = 'postgres+psycopg2://postgres:password@localhost:5432/plants'
 
 SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
-# DATABASE_URI = f'postgres+psycopg2://{SQLALCHEMY_DATABASE_URI}/plants'
+
 engine = create_engine(SQLALCHEMY_DATABASE_URI)
 Base.metadata.bind = engine
 

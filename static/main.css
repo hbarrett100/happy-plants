@@ -1,5 +1,6 @@
 body, html {
 	height: 100%;
+	font-family: 'Hind Madurai', sans-serif;
   }
   
 #bg-img {
@@ -221,10 +222,10 @@ only screen and (max-width: 760px),
 		transform: translate(0);
 		top: 88px;
 	}
- #table-scroll { 
-		height: 100%;
-		overflow-y: hidden;
-	} 
+	#table-scroll { 
+			height: 100%;
+			overflow-y: hidden;
+		} 
 
 	table {
 		max-height: none;

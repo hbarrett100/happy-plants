@@ -190,6 +190,7 @@ var UIController = (function () {
             var rowCount = $('#plant-table >tbody >tr').length;
             if (rowCount == 0) {
                 $('#empty-table').show();
+                $('#deleted-message').hide();
 
             }
 

@@ -12,10 +12,6 @@ SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 
 
 def get_calendar():
-    GOOGLE_CREDENTIALS = os.environ['GOOGLE_CREDENTIALS']
-    with open("credentials.json", "w") as text_file:
-        text_file.write(GOOGLE_CREDENTIALS)
-
 
     creds = None
     # The file token.pickle stores the user's access and refresh tokens, and is
