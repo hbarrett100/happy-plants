@@ -8,6 +8,7 @@ View the deployed app at https://frozen-retreat-77324.herokuapp.com/
 - Bootstrap loader and delete icon not showing on Safari
 
 ### Future Work
+- Improve the simple UI and responsiveness
 - Ensure compatibility with Safari
 - Add edit plant feature
 - Add login feature
